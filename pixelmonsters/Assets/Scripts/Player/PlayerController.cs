@@ -13,6 +13,14 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
     private Vector2 input;
 
+    // Cache the reference to the Animator
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     private void Update()
     {
         if (!isMoving)
@@ -20,8 +28,15 @@ public class PlayerController : MonoBehaviour
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
 
+            // Keep the player from moving diagonally 
+            if (input.x != 0) input.y = 0;
+
             if (input != Vector2.zero)
             {
+                // Accessing Animator Blendtree parameters moveX and moveY
+                animator.SetFloat("moveX", input.x);
+                animator.SetFloat("moveY", input.y);
+                
                 Vector2 targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
@@ -29,6 +44,8 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(Move(targetPos));
             }
         }
+        
+        animator.SetBool("isMoving", isMoving);
     }
 
     // Coroutine - Move the Player from its starting position to its target position, over a period of time
