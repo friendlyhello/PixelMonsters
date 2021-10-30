@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 using Vector2 = UnityEngine.Vector2;
 using Vector3 = UnityEngine.Vector3;
 
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private LayerMask solidObjectsLayer;
+    [SerializeField] private LayerMask grassLayer;
     
     private bool isMoving;
     private Vector2 input;
@@ -65,16 +67,29 @@ public class PlayerController : MonoBehaviour
         transform.position = targetPos;
         
         isMoving = false;
+
+        CheckForEncounters();
     }
 
     private bool isWalkable(Vector3 targetPos)
     {
-        if (Physics2D.OverlapCircle(targetPos, 0.0f, solidObjectsLayer) != null)
+        if (Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer) != null)
         {
             return false;
         }
-
         return true;
+    }
+
+    private void CheckForEncounters()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.05f, grassLayer) != null)
+        {
+            // Generate a random battle
+            if (Random.Range(1, 101) <= 10)
+            {
+                Debug.Log("MONSTER ENCOUNTER!");
+            }
+        }
     }
 
 }
