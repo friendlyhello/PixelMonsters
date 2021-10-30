@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Monster_01
   m_EditorClassIdentifier: 
   name: Monster 01
-  description: 
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  type1: 0
-  type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
+  description: This is the tiniest monster but still pretty strong. Not to be dismissed.
+  frontSprite: {fileID: 21300000, guid: 581ddd5c798fe48b9a1634ea360fa99d, type: 3}
+  backSprite: {fileID: 21300000, guid: 02b5bb57f737546b9b326a80bdbd278b, type: 3}
+  type1: 5
+  type2: 8
+  maxHp: 45
+  attack: 49
+  defense: 49
+  spAttack: 65
+  spDefense: 65
+  speed: 45

@@ -12,15 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80725271c37c8416ea684b415e93d5b0, type: 3}
   m_Name: Monster_02
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  type1: 0
-  type2: 0
-  maxHp: 0
-  attack: 0
-  defense: 0
-  spAttack: 0
-  spDefense: 0
-  speed: 0
+  name: Monster 2
+  description: Small and spicy!
+  frontSprite: {fileID: 21300000, guid: eb424524b0d8c468eb04850922da1fc6, type: 3}
+  backSprite: {fileID: 21300000, guid: 3b94f7592148b41dca60d163d01f189f, type: 3}
+  type1: 2
+  type2: 15
+  maxHp: 39
+  attack: 52
+  defense: 43
+  spAttack: 50
+  spDefense: 50
+  speed: 65
