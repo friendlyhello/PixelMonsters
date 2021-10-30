@@ -9,6 +9,7 @@ using Vector3 = UnityEngine.Vector3;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
+    [SerializeField] private LayerMask solidObjectsLayer;
     
     private bool isMoving;
     private Vector2 input;
@@ -40,8 +41,10 @@ public class PlayerController : MonoBehaviour
                 Vector2 targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
-
-                StartCoroutine(Move(targetPos));
+                
+                // (!) targetPos == true or false (Whatever the machine isWalkable returns)
+                if(isWalkable(targetPos)) 
+                    StartCoroutine(Move(targetPos));
             }
         }
         
@@ -63,5 +66,15 @@ public class PlayerController : MonoBehaviour
         
         isMoving = false;
     }
-    
+
+    private bool isWalkable(Vector3 targetPos)
+    {
+        if (Physics2D.OverlapCircle(targetPos, 0.0f, solidObjectsLayer) != null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 }
