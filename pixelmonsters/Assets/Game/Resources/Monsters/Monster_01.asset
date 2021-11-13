@@ -21,6 +21,6 @@ MonoBehaviour:
   maxHp: 45
   attack: 49
   defense: 49
-  spAttack: 65
+  spAttack: 60
   spDefense: 65
   speed: 45
