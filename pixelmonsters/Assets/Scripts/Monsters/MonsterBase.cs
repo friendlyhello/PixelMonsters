@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create New Monster")]
+
 public class MonsterBase : ScriptableObject
 {
     // (!) Contains all base info for a Monster: Name, Type, Base Stats, etc
@@ -107,5 +106,5 @@ public enum MonsterType
     Bug,
     Rock,
     Ghost,
-    Dragon,
+    Dragon
 }
