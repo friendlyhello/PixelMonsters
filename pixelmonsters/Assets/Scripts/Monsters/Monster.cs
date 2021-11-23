@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster
@@ -10,11 +11,37 @@ public class Monster
     private MonsterBase _base;
     private int level;
     
+    // Current monster HP
+    public int HP { get; set; }
+    
+    // These are the moves the monsters actually have, not the moves they learn
+    public List<Move> Moves { get; set; }
+    
     // Monster constructor
     public Monster(MonsterBase pBase, int pLevel)
     {
         _base = pBase;
         level = pLevel;
+        HP = _base.MaxHp;
+        
+        // (!) Generate monster moves based on level
+        
+        // Initially set moves to empty list
+        Moves = new List<Move>();
+        
+        // Loop through Learnable Moves, then add it to the list, based on the level
+        foreach (var move in _base.LearnableMoves)
+        {
+            // Check if level at which move can be learned is <= to the level of
+            // the monster
+            if (move.Level <= level)
+                Moves.Add(new Move(move.Base));
+            
+            // Monsters can only have four moves, if there are more than four moves, 
+            // don't add anymore moves and exit loop
+            if (Moves.Count >= 4)
+                break;
+        }
     }
     
     // Properties to get stats from Monster Base Class

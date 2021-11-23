@@ -10,9 +10,9 @@ public class Move
     public int PP { get; set; }
     
     // Constructor
-    public Move(MoveBase pBase, int pp)
+    public Move(MoveBase pBase)
     {
         Base = pBase;
-        PP = pp;
+        PP = pBase.PP;
     }
 }
