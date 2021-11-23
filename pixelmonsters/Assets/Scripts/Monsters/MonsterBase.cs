@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Monster", menuName = "Monster/Create New Monster")]
@@ -26,6 +27,9 @@ public class MonsterBase : ScriptableObject
     [SerializeField] private int spAttack;
     [SerializeField] private int spDefense;
     [SerializeField] private int speed;
+    
+    // List of Learnable Moves, LearnableMove class within the <>
+    [SerializeField] private List<LearnableMove> learnableMoves;
 
     // Properties to expose a variables outside of a Class
     public string Name
@@ -86,6 +90,35 @@ public class MonsterBase : ScriptableObject
     public int Speed
     {
         get { return speed; }
+    }
+    
+    // Property for learnableMove List
+    public List<LearnableMove> LearnableMoves
+    {
+        get { return learnableMoves; }
+    }
+}
+
+// (!) This class needs to appear in the inspector, so use System.Serializable
+
+[System.Serializable]
+public class LearnableMove
+{
+    // Reference MoveBase ScriptableObject
+    [SerializeField] private MoveBase moveBase;
+    
+    // Level at which move will be learned
+    [SerializeField] private int level;
+    
+    // Properties to expose moveBase and level
+    public MoveBase Base
+    {
+        get { return moveBase; }
+    }
+
+    public int Level
+    {
+        get { return level; }
     }
 }
 
