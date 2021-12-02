@@ -31,7 +31,7 @@ public class MonsterBase : ScriptableObject
     // List of Learnable Moves, LearnableMove class within the <>
     [SerializeField] private List<LearnableMove> learnableMoves;
 
-    // Properties to expose a variables outside of a Class
+    // Properties to expose variables outside of this scriptable object
     public string Name
     {
         get { return name; }
