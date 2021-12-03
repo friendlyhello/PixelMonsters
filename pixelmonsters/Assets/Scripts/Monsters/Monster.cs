@@ -5,11 +5,12 @@ public class Monster
 {
     // (!) C# Monster Class calculates all the values specific to a Monster's Level
     
-    // Reference to Monster Base Class in order to access all base data
+    // (!)  Reference to Monster Base Class in order to access all base data
+    //      These two values can be used to calculate all the base levels for the Monsters
     
-    // These two values can be used to calculate all the base levels for the Monsters
-    private MonsterBase _base;
-    private int level;
+    // These were private but then changed to properties so they can be accessed outside of the class.
+    public MonsterBase Base { get; set; }
+    public int Level { get; set; }
     
     // Current monster HP
     public int HP { get; set; }
@@ -20,9 +21,9 @@ public class Monster
     // Monster constructor
     public Monster(MonsterBase pBase, int pLevel)
     {
-        _base = pBase;
-        level = pLevel;
-        HP = _base.MaxHp;
+        Base = pBase;
+        Level = pLevel;
+        HP = MaxHp;
         
         // (!) Generate monster moves based on level
         
@@ -30,11 +31,11 @@ public class Monster
         Moves = new List<Move>();
         
         // Loop through Learnable Moves, then add it to the list, based on the level
-        foreach (var move in _base.LearnableMoves)
+        foreach (var move in Base.LearnableMoves)
         {
             // Check if level at which move can be learned is <= to the level of
             // the monster
-            if (move.Level <= level)
+            if (move.Level <= Level)
                 Moves.Add(new Move(move.Base));
             
             // Monsters can only have four moves, if there are more than four moves, 
@@ -48,31 +49,31 @@ public class Monster
     public int Attack
     {
         // This is the actual formula used in the Pokemón game
-        get { return Mathf.FloorToInt((_base.Attack * level) / 100.0f) + 5; }
+        get { return Mathf.FloorToInt((Base.Attack * Level) / 100.0f) + 5; }
     }
     
     public int Defense
     {
-        get { return Mathf.FloorToInt((_base.Defense * level) / 100.0f) + 5; }
+        get { return Mathf.FloorToInt((Base.Defense * Level) / 100.0f) + 5; }
     }
     
     public int spAttack
     {
-        get { return Mathf.FloorToInt((_base.SpAttack * level) / 100.0f) + 5; }
+        get { return Mathf.FloorToInt((Base.SpAttack * Level) / 100.0f) + 5; }
     }
     
     public int spDefense
     {
-        get { return Mathf.FloorToInt((_base.SpDefense * level) / 100.0f) + 5; }
+        get { return Mathf.FloorToInt((Base.SpDefense * Level) / 100.0f) + 5; }
     }
     
     public int Speed
     {
-        get { return Mathf.FloorToInt((_base.Speed * level) / 100.0f) + 5; }
+        get { return Mathf.FloorToInt((Base.Speed * Level) / 100.0f) + 5; }
     }
     
     public int MaxHp
     {
-        get { return Mathf.FloorToInt((_base.MaxHp * level) / 100.0f) + 10; }
+        get { return Mathf.FloorToInt((Base.MaxHp * Level) / 100.0f) + 10; }
     }
 }
