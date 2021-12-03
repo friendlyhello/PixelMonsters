@@ -4975,6 +4975,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerUnit: {fileID: 1385464531}
   playerHud: {fileID: 501259291}
+  enemyUnit: {fileID: 1872319542}
+  enemyHud: {fileID: 2021253714}
 --- !u!1 &1513789806
 GameObject:
   m_ObjectHideFlags: 0
@@ -9039,9 +9041,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 027d9363b44ed4d7582b7864702e959d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _base: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
+  _base: {fileID: 11400000, guid: 984ab9b6ba89f42c3957a8b3b96f13ba, type: 2}
   level: 7
-  isPlayerUnit: 1
+  isPlayerUnit: 0
 --- !u!114 &1872319543
 MonoBehaviour:
   m_ObjectHideFlags: 0
