@@ -8,12 +8,17 @@ public class BattleHud : MonoBehaviour
    // Reference to Name text, Level text, and the HP Bar
    [SerializeField] private Text nameText;
    [SerializeField] private Text levelText;
+   
+   // Reference to HPBar class
    [SerializeField] private HPBar hpBar;
 
+   // Pass in Monster class
    public void SetData(Monster monster)
    {
       nameText.text = monster.Base.Name;
       levelText.text = "Lvl " + monster.Level;
-      hpBar.SetHP((float)monster.HP / monster.MaxHp);
+      
+      // Thanks to reference to HPBar class, SetHP function can be accessed with dot notation:
+      hpBar.SetHP((float)monster.HP / monster.MaxHp); // parameter passed in to HpNormalized in SetHP
    }
 }
