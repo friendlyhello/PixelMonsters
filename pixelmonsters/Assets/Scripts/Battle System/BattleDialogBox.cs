@@ -64,4 +64,31 @@ public class BattleDialogBox : MonoBehaviour
         actionTexts[i].color = Color.black;
     }
   }
+
+  public void UpdateMoveSelection(int selectedMove, Move move)
+  {
+    for (int i = 0; i < moveTexts.Count; i++)
+    {
+      if (i == selectedMove)
+        moveTexts[i].color = highlightedColor;
+      else
+        moveTexts[i].color = Color.black;
+    }
+
+    ppText.text = $"PP {move.PP}/{move.Base.PP}";
+    typeText.text = move.Base.Type.ToString();
+  }
+
+  public void SetMoveNames(List<Move> moves)
+  {
+    // Look through all the moves list
+    for (int i = 0; i < moveTexts.Count; i++)
+    {
+      // Some monsters might have less that 4 moves, so check
+      if (i < moves.Count)
+        moveTexts[i].text = moves[i].Base.Name;
+      else
+        moveTexts[i].text = " - ";
+    }
+  }
 }

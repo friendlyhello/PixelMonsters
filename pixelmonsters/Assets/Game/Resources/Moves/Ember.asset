@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ember
   description: Ember fire attack!
-  type: 0
+  type: 2
   power: 50
   accuracy: 100
-  pp: 20
+  pp: 10

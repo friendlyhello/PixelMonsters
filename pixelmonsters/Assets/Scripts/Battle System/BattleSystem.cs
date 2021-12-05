@@ -20,6 +20,7 @@ public class BattleSystem : MonoBehaviour
 
    private BattleState state;
    private int currentAction;
+   private int currentMove;
    
    private void Start()
    {
@@ -40,6 +41,9 @@ public class BattleSystem : MonoBehaviour
       
       // Setup the Enemy HUD
       enemyHud.SetData(enemyUnit.Monster);
+      
+      // Set and display monster move names
+      dialogBox.SetMoveNames(playerUnit.Monster.Moves);
       
       // Set the dialogue in the dialogue box UI
       yield return dialogBox.TypeDialog($"A wild {enemyUnit.Monster.Base.Name} appeared!");
@@ -68,6 +72,10 @@ public class BattleSystem : MonoBehaviour
       if (state == BattleState.PlayerAction)
       {
          HandleActionSelection();
+      }
+      else if (state == BattleState.PlayerMove)
+      {
+         HandleMoveSelection();
       }
    }
    
@@ -98,6 +106,32 @@ public class BattleSystem : MonoBehaviour
             // Run
          }
       }
+   }
+
+   private void HandleMoveSelection()
+   {
+      if (Input.GetKeyDown(KeyCode.RightArrow))
+      {
+         if (currentMove < playerUnit.Monster.Moves.Count - 1)
+            ++currentMove;
+      }
+      else if (Input.GetKeyDown(KeyCode.LeftArrow))
+      {
+         if (currentMove > 0)
+            --currentMove;
+      }
+      else if (Input.GetKeyDown(KeyCode.DownArrow))
+      {
+         if (currentMove < playerUnit.Monster.Moves.Count - 2)
+            currentMove += 2;
+      }
+      else if (Input.GetKeyDown(KeyCode.UpArrow))
+      {
+         if (currentMove > 1)
+            currentMove -= 2;
+      }
+      
+      dialogBox.UpdateMoveSelection(currentMove, playerUnit.Monster.Moves[currentMove]);
    }
 }
 
