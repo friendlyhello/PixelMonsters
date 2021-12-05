@@ -49,19 +49,19 @@ public class BattleSystem : MonoBehaviour
       PlayerAction();
    }
 
-   void PlayerAction()
-   {
-      state = BattleState.PlayerAction;
-      StartCoroutine(dialogBox.TypeDialog("Choose an action."));
-      dialogBox.EnableActionSelector(true);
-   }
-
    private void Update()
    {
       if (state == BattleState.PlayerAction)
       {
          HandleActionSelection();
       }
+   }
+   
+   void PlayerAction()
+   {
+      state = BattleState.PlayerAction;
+      StartCoroutine(dialogBox.TypeDialog("Choose an action."));
+      dialogBox.EnableActionSelector(true);
    }
 
    void HandleActionSelection()

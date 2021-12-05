@@ -5346,7 +5346,7 @@ MonoBehaviour:
   ppText: {fileID: 145062880}
   typeText: {fileID: 1971253953}
   lettersPerSecond: 30
-  highlightedColor: {r: 0, g: 0.3077016, b: 1, a: 0}
+  highlightedColor: {r: 0.1273585, g: 0.29407087, b: 1, a: 1}
 --- !u!1 &1596339027
 GameObject:
   m_ObjectHideFlags: 0
