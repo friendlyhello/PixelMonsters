@@ -54,6 +54,14 @@ public class BattleSystem : MonoBehaviour
       StartCoroutine(dialogBox.TypeDialog("Choose an action."));
       dialogBox.EnableActionSelector(true);
    }
+
+   void PlayerMove()
+   {
+      state = BattleState.PlayerMove;
+      dialogBox.EnableActionSelector(false);
+      dialogBox.EnableDialogText(false);
+      dialogBox.EnableMoveSelector(true);
+   }
    
    private void Update()
    {
@@ -83,6 +91,7 @@ public class BattleSystem : MonoBehaviour
          if (currentAction == 0)
          {
             // Fight
+            PlayerMove();
          }
          else if (currentAction == 1)
          {
