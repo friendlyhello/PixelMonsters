@@ -8,7 +8,7 @@ public class MonsterBase : ScriptableObject
     // (!) Contains all base info for a Monster: Name, Type, Base Stats, etc
 
     // Variables to store Monster Data
-    [SerializeField] private string name;
+    [SerializeField] private new string name;
     
     [TextArea] 
     [SerializeField] private string description;
