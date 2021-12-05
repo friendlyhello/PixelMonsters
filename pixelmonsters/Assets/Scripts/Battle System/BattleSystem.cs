@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 // Control the Game States
 public enum BattleState {Start, PlayerAction, PlayerMove, EnemyMove, Busy}
@@ -26,7 +25,7 @@ public class BattleSystem : MonoBehaviour
    {
       StartCoroutine(SetupBattle());
    }
-   
+
    // Setup Battle method
    public IEnumerator SetupBattle()
    {
@@ -49,6 +48,13 @@ public class BattleSystem : MonoBehaviour
       PlayerAction();
    }
 
+   void PlayerAction()
+   {
+      state = BattleState.PlayerAction;
+      StartCoroutine(dialogBox.TypeDialog("Choose an action."));
+      dialogBox.EnableActionSelector(true);
+   }
+   
    private void Update()
    {
       if (state == BattleState.PlayerAction)
@@ -57,28 +63,35 @@ public class BattleSystem : MonoBehaviour
       }
    }
    
-   void PlayerAction()
-   {
-      state = BattleState.PlayerAction;
-      StartCoroutine(dialogBox.TypeDialog("Choose an action."));
-      dialogBox.EnableActionSelector(true);
-   }
-
    void HandleActionSelection()
    {
       if (Input.GetKeyDown(KeyCode.DownArrow))
       {
          if (currentAction < 1)
             ++currentAction;
-         
-         else if (Input.GetKeyDown(KeyCode.UpArrow))
-            if (currentAction > 0)
-               --currentAction;
       }
-      
+      else if (Input.GetKeyDown(KeyCode.UpArrow))
+      {
+         if (currentAction > 0)
+            --currentAction;
+      }
+
       dialogBox.UpdateActionSelection(currentAction);
+
+      if (Input.GetKeyDown(KeyCode.Return))
+      {
+         if (currentAction == 0)
+         {
+            // Fight
+         }
+         else if (currentAction == 1)
+         {
+            // Run
+         }
+      }
    }
 }
+
 
 
 

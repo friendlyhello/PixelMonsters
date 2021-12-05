@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class BattleDialogBox : MonoBehaviour
 {
+  [SerializeField] private int lettersPerSecond;
+  [SerializeField] private Color highlightedColor;
+  
   // References
   [SerializeField] private Text dialogText;
   [SerializeField] private GameObject actionSelector;
@@ -16,10 +19,7 @@ public class BattleDialogBox : MonoBehaviour
 
   [SerializeField] private Text ppText;
   [SerializeField] private Text typeText;
-  
-  [SerializeField] private int lettersPerSecond;
-  [SerializeField] private Color highlightedColor;
-  
+
   // Set dialog to dialog text
   public void SetDialog(string dialog)
   {
@@ -33,7 +33,7 @@ public class BattleDialogBox : MonoBehaviour
     foreach (char letter in dialog.ToCharArray())
     {
       dialogText.text += letter;
-      yield return new WaitForSeconds(1f / lettersPerSecond);
+      yield return new WaitForSeconds(1f/lettersPerSecond);
     }
   }
   
@@ -56,16 +56,12 @@ public class BattleDialogBox : MonoBehaviour
   
   public void UpdateActionSelection(int selectedAction)
   {
-    for (int i = 0; i < actionTexts.Count; i++)
+    for (int i=0; i<actionTexts.Count; ++i)
     {
       if (i == selectedAction)
-      {
         actionTexts[i].color = highlightedColor;
-      }
       else
-      {
         actionTexts[i].color = Color.black;
-      }
     }
   }
 }
