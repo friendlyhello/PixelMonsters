@@ -27,8 +27,8 @@ public class BattleHud : MonoBehaviour
       hpBar.SetHP((float)monster.HP / monster.MaxHp); // parameter passed in to HpNormalized in SetHP
    }
 
-   public void UpdateHP()
+   public IEnumerator UpdateHP()
    {
-      hpBar.SetHP((float)_monster.HP / _monster.MaxHp);
+      yield return hpBar.SetHPSmooth((float)_monster.HP / _monster.MaxHp);
    }
 }

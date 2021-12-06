@@ -77,7 +77,7 @@ public class BattleSystem : MonoBehaviour
       yield return new WaitForSeconds(1f);
 
       bool isFainted = enemyUnit.Monster.TakeDamage(move, playerUnit.Monster);
-      enemyHud.UpdateHP();
+      yield return enemyHud.UpdateHP();
       
       if (isFainted)
       {
@@ -99,7 +99,7 @@ public class BattleSystem : MonoBehaviour
       yield return new WaitForSeconds(1f);
 
       bool isFainted = playerUnit.Monster.TakeDamage(move, playerUnit.Monster);
-      playerHud.UpdateHP();
+      yield return playerHud.UpdateHP();
       
       if (isFainted)
       {
