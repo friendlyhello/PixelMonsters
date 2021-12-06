@@ -66,6 +66,12 @@ public class BattleSystem : MonoBehaviour
       dialogBox.EnableDialogText(false);
       dialogBox.EnableMoveSelector(true);
    }
+
+   IEnumerator PerformPlayerMove()
+   {
+      var move = playerUnit.Monster.Moves[currentMove];
+      yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} used {move.Base.Name}");
+   }
    
    private void Update()
    {
@@ -132,6 +138,13 @@ public class BattleSystem : MonoBehaviour
       }
       
       dialogBox.UpdateMoveSelection(currentMove, playerUnit.Monster.Moves[currentMove]);
+
+      if (Input.GetKeyDown(KeyCode.Return))
+      {
+         dialogBox.EnableMoveSelector(false);
+         dialogBox.EnableDialogText(true);
+         StartCoroutine(PerformPlayerMove());
+      }
    }
 }
 
