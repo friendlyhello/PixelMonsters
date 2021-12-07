@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Growl
   description: Rarrr!
-  type: 7
+  type: 0
   power: 45
   accuracy: 100
   pp: 9

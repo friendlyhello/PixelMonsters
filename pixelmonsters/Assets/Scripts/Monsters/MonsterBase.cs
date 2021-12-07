@@ -141,3 +141,28 @@ public enum MonsterType
     Ghost,
     Dragon
 }
+
+public class TypeChart
+{
+    static readonly float[][] chart =
+    {
+        //                  NOR   FIR   WAT   ELE  GRA  ICE  FIG  POI               
+        /*NOR*/ new float[] { 1f,  1f,   1f,  1f,  1f,  1f,  1f,  1f },
+        /*FIR*/ new float[] { 1f, 0.5f, 0.5f, 1f,  2f,  2f,  1f,  1f },
+        /*WAT*/ new float[] { 1f,  2f,  0.5f, 2f, 0.5f, 1f,  1f,  1f },
+        /*ELE*/ new float[] { 1f,  1f,  2f,  0.5f,0.5f, 2f,  1f,  1f },
+        /*GRS*/ new float[] { 1f, 0.5f, 2f,   2f, 0.5f, 1f,  1f, 0.5f },
+        /*POI*/ new float[] { 1f,  1f,   1f,  1f,  2f,  1f,  1f,  1f }
+    };
+
+    public static float GetEffectiveness(MonsterType attackType, MonsterType defenseType)
+    {
+        if (attackType == MonsterType.None || defenseType == MonsterType.None)
+            return 1;
+
+        int row = (int)attackType - 1;
+        int col = (int)defenseType - 1;
+
+        return chart[row][col];
+    }
+}
