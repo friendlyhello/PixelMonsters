@@ -18,11 +18,13 @@ public class BattleSystem : MonoBehaviour
    // (!) Reference to BattleDialogBox class
    [SerializeField] private BattleDialogBox dialogBox;
 
+   public event Action<bool> OnBattleOver;
+   
    private BattleState state;
    private int currentAction;
    private int currentMove;
    
-   private void Start()
+   public void StartBattle()
    {
       StartCoroutine(SetupBattle());
    }
@@ -87,6 +89,9 @@ public class BattleSystem : MonoBehaviour
       {
          yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} Fainted");
          enemyUnit.PlayFaintAnimation();
+
+         yield return new WaitForSeconds(2f);
+         OnBattleOver(true);
       }
       else
       {
@@ -114,6 +119,9 @@ public class BattleSystem : MonoBehaviour
       {
          yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} Fainted");
          playerUnit.PlayFaintAnimation();
+         
+         yield return new WaitForSeconds(2f);
+         OnBattleOver(false);
       }
       else
       {
@@ -132,7 +140,8 @@ public class BattleSystem : MonoBehaviour
          yield return dialogBox.TypeDialog("It's not very effective!");
    }
    
-   private void Update()
+   // HandleUpdate wont be called automatically by Unity like Update does
+   public void HandleUpdate()
    {
       if (state == BattleState.PlayerAction)
       {

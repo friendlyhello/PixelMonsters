@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private LayerMask solidObjectsLayer;
     [SerializeField] private LayerMask grassLayer;
+
+    public event Action OnEncountered;
     
     private bool isMoving;
     private Vector2 input;
@@ -21,7 +24,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    // HandleUpdate wont be called automatically by Unity like Update does
+    public void HandleUpdate()
     {
         if (!isMoving)
         {
@@ -85,6 +89,12 @@ public class PlayerController : MonoBehaviour
             // Generate a random battle
             if (Random.Range(1, 101) <= 10)
             {
+                // Disable player walking animation
+                animator.SetBool("isMoving", false);
+                
+                // Call OnEncountered event
+                OnEncountered();
+                
                 Debug.Log("MONSTER ENCOUNTER!");
             }
         }
