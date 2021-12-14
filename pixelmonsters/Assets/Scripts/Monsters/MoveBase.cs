@@ -43,4 +43,18 @@ using UnityEngine;
     {
         get { return pp; }
     }
+    
+    public bool IsSpecial {
+        get {
+            if (type == MonsterType.Fire || type == MonsterType.Water || type == MonsterType.Grass
+                || type == MonsterType.Ice || type == MonsterType.Electric || type == MonsterType.Dragon)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 }
