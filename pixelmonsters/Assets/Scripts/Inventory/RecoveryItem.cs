@@ -21,4 +21,7 @@ public class RecoveryItem : ItemBase
 
     [SerializeField] private ConditionID status;
     [SerializeField] private bool recoverAllStatus;
+    
+    [SerializeField] private bool revive;
+    [SerializeField] private bool maxRevive;
 }
