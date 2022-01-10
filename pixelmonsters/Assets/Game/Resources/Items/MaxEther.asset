@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: MaxEther
   description: Recovers the Power of a Monster fully
-  icon: {fileID: 2099718416087951911, guid: 6088d43d48d46484498a368e15270c08, type: 3}
+  icon: {fileID: 1539470538373338503, guid: 6088d43d48d46484498a368e15270c08, type: 3}
   HPAmount: 0
   restoreMaxHP: 0
   PPAmount: 0

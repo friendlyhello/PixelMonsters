@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Ether
   m_EditorClassIdentifier: 
   name: Ether
-  description: Recovers the Power of a Monster  by 20 PP
-  icon: {fileID: 2099718416087951911, guid: 6088d43d48d46484498a368e15270c08, type: 3}
+  description: Recovers the Power of a Monster  by 10 PP
+  icon: {fileID: 5694542033784922947, guid: 6088d43d48d46484498a368e15270c08, type: 3}
   HPAmount: 0
   restoreMaxHP: 0
-  PPAmount: 20
+  PPAmount: 10
   restoreMaxPP: 0
   status: 0
   recoverAllStatus: 0

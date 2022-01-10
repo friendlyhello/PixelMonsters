@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a58b64ea93c4a40c8aab108d01c8008c, type: 3}
-  m_Name: SuperPotion 1
+  m_Name: MaxPotion
   m_EditorClassIdentifier: 
-  name: SuperPotion
-  description: Recovers the health of a Monster  by 50 HP
-  icon: {fileID: 2099718416087951911, guid: 6088d43d48d46484498a368e15270c08, type: 3}
-  HPAmount: 50
-  restoreMaxHP: 0
+  name: MaxPotion
+  description: Recovers the health of a Monster fully
+  icon: {fileID: -6977069912215472336, guid: 6088d43d48d46484498a368e15270c08, type: 3}
+  HPAmount: 0
+  restoreMaxHP: 1
   PPAmount: 0
   restoreMaxPP: 0
   status: 0

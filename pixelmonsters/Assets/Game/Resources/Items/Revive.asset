@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58b64ea93c4a40c8aab108d01c8008c, type: 3}
   m_Name: Revive
   m_EditorClassIdentifier: 
-  name: Awakening
-  description: Revives fainted Monster with full HP
+  name: Revive
+  description: Revives fainted Monster with 20 HP
   icon: {fileID: 3057794363970017049, guid: 6088d43d48d46484498a368e15270c08, type: 3}
-  HPAmount: 0
-  restoreMaxHP: 1
+  HPAmount: 20
+  restoreMaxHP: 0
   PPAmount: 0
   restoreMaxPP: 0
   status: 0

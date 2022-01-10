@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Awakening
   description: Revives fainted Monster with full HP
-  icon: {fileID: 3057794363970017049, guid: 6088d43d48d46484498a368e15270c08, type: 3}
+  icon: {fileID: -2809395180699245539, guid: 6088d43d48d46484498a368e15270c08, type: 3}
   HPAmount: 0
   restoreMaxHP: 1
   PPAmount: 0
   restoreMaxPP: 0
   status: 0
   recoverAllStatus: 0
-  revive: 1
-  maxRevive: 0
+  revive: 0
+  maxRevive: 1
