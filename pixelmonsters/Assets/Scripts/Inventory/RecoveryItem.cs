@@ -13,15 +13,20 @@ public class RecoveryItem : ItemBase
     //  (!) New fields added to this class appear in Recovery Item ScriptableObject
     //      Fields for Recovery Item behaviours: Heal HP, PP, Fainted Monsters, etc.
 
-    [SerializeField] private int hpAmount;
+    [Header("HP")]
+    [SerializeField] private int HPAmount;
     [SerializeField] private bool restoreMaxHP;
     
-    [SerializeField] private int ppAmount;
+    [Header("PP")]
+    [SerializeField] private int PPAmount;
     [SerializeField] private bool restoreMaxPP;
 
+    // TODO: Finish implementing Conditions
+    [Header("Status Conditions")]
     [SerializeField] private ConditionID status;
     [SerializeField] private bool recoverAllStatus;
     
+    [Header("Revive")]
     [SerializeField] private bool revive;
     [SerializeField] private bool maxRevive;
 }
