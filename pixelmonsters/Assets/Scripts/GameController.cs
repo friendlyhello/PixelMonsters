@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle }
+public enum GameState { FreeRoam, Battle, Menu }
 public class GameController : MonoBehaviour
 {
   
@@ -11,9 +11,16 @@ public class GameController : MonoBehaviour
   [SerializeField] private PlayerController playerController;
   [SerializeField] private BattleSystem battleSystem;
   [SerializeField] private Camera worldCamera;
+
+  private MenuController menuController;
   
   private GameState state;
-  
+
+  private void Awake()
+  {
+    menuController = GetComponent<MenuController>();
+  }
+
   // Subscribe to events
   private void Start()
   {
@@ -43,11 +50,24 @@ public class GameController : MonoBehaviour
     {
       // Give control to Player
       playerController.HandleUpdate();
+      
+      // Open/Close Menu
+      if (Input.GetKeyDown(KeyCode.Return))
+      {
+        menuController.OpenMenu();
+        state = GameState.Menu;
+      }
     }
+    
     else if (state == GameState.Battle)
     {
       // Give control to Battle System
       battleSystem.HandleUpdate();
+    }
+    
+    else if (state == GameState.Menu)
+    {
+      menuController.HandleUpdate();
     }
   }
 }

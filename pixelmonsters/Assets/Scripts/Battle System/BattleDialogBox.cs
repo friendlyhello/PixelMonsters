@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,7 @@ using UnityEngine.UI;
 public class BattleDialogBox : MonoBehaviour
 {
   [SerializeField] private int lettersPerSecond;
-  [SerializeField] private Color highlightedColor;
-  
+
   // References
   [SerializeField] private Text dialogText;
   [SerializeField] private GameObject actionSelector;
@@ -19,6 +19,13 @@ public class BattleDialogBox : MonoBehaviour
 
   [SerializeField] private Text ppText;
   [SerializeField] private Text typeText;
+
+  private Color highlightedColor;
+
+  private void Start()
+  {
+    highlightedColor = GlobalSettings.i.HighlightedColor;
+  }
 
   // Set dialog to dialog text
   public void SetDialog(string dialog)
