@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ItemBase : ScriptableObject
 {
     // Common properties all Item types will have
-    [SerializeField] private string name;
+    [SerializeField] private new string name;
     [SerializeField] private string description;
     [SerializeField] private Sprite icon;
     
