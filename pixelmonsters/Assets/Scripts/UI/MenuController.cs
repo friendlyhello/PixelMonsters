@@ -17,28 +17,38 @@ public class MenuController : MonoBehaviour
   private void Awake()
   {
     // Get the menuItem TMP text children in menu
-    menuItems = menu.GetComponentInChildren<List<TMP_Text>>();
+    menuItems = menu.GetComponentsInChildren<TMP_Text>().ToList();
   }
 
   public void OpenMenu()
   {
     menu.SetActive(true);
+    
+    // Make sure an item is selected when the menu is open
+    UpdateItemSelection();
   }
 
   // Menu item selection highlighting
   public void HandleUpdate()
   {
+    // Store previous selection in a variable
+    int prevSelection = selectedItem;
+
     // Get all the items in the list
     if (Input.GetKeyDown(KeyCode.DownArrow))
       ++selectedItem;
     else if (Input.GetKeyDown(KeyCode.UpArrow))
       --selectedItem;
-    
+
     // Clamp the selected item between 0 and the length of the menu items list
     selectedItem = Mathf.Clamp(selectedItem, 0, menuItems.Count - 1);
+
+    // Only call UpdateItemSelection if there has been a change in the selection:
+    if (prevSelection != selectedItem)
+      UpdateItemSelection();
   }
-  
-  // Update the selected item in the UI
+
+// Update the selected item in the UI
   void UpdateItemSelection()
   {
     // Loop through the menu items
