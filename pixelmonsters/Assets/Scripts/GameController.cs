@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { FreeRoam, Battle, Menu }
+public enum GameState { FreeRoam, Battle, Menu, Bag }
 public class GameController : MonoBehaviour
 {
   
@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
   [SerializeField] private PlayerController playerController;
   [SerializeField] private BattleSystem battleSystem;
   [SerializeField] private Camera worldCamera;
+  [SerializeField] private InventoryUI inventoryUI;
 
   private MenuController menuController;
   
@@ -26,6 +27,14 @@ public class GameController : MonoBehaviour
   {
     playerController.OnEncountered += StartBattle;
     battleSystem.OnBattleOver += EndBattle;
+    
+    // Event Subscribers
+    menuController.OnBack += () =>
+    {
+      state = GameState.FreeRoam;
+    };
+
+    menuController.OnMenuSelected += OnMenuSelected;
   }
 
   void StartBattle()
@@ -52,7 +61,7 @@ public class GameController : MonoBehaviour
       playerController.HandleUpdate();
       
       // Open/Close Menu
-      if (Input.GetKeyDown(KeyCode.Return))
+      if (Input.GetKeyDown(KeyCode.Tab))
       {
         menuController.OpenMenu();
         state = GameState.Menu;
@@ -68,6 +77,42 @@ public class GameController : MonoBehaviour
     else if (state == GameState.Menu)
     {
       menuController.HandleUpdate();
+    }
+    
+    else if (state == GameState.Bag)
+    {
+      Action OnBack = () =>
+      {
+        inventoryUI.gameObject.SetActive(false);
+        state = GameState.FreeRoam;
+      };
+      
+      inventoryUI.HandleUpdate(OnBack);
+    }
+    
+  }
+
+  private void OnMenuSelected(int selectedItem)
+  {
+    if (selectedItem == 0)
+    {
+      // Pixel Monster is selected
+    }
+    else if (selectedItem == 1)
+    {
+      // Bag is selected
+      inventoryUI.gameObject.SetActive(true);
+      state = GameState.Bag;
+      
+      Debug.Log("Bag is selected");
+    }
+    else if (selectedItem == 2)
+    {
+      // Save is selected
+    }
+    else if (selectedItem == 3)
+    {
+      // Load is selected
     }
   }
 }

@@ -10,6 +10,12 @@ public class MenuController : MonoBehaviour
   // Reference to Menu GameObject
   [SerializeField] private GameObject menu;
 
+  // Fire this event when Enter is pressed on a selected item in the menu
+  public event Action<int> OnMenuSelected;
+  
+  // Fire this event to return to the main menu list
+  public event Action OnBack;
+  
   private List<TMP_Text> menuItems;
 
   private int selectedItem = 0;
@@ -26,6 +32,11 @@ public class MenuController : MonoBehaviour
     
     // Make sure an item is selected when the menu is open
     UpdateItemSelection();
+  }
+  
+  public void CloseMenu()
+  {
+    menu.SetActive(false);
   }
 
   // Menu item selection highlighting
@@ -46,6 +57,20 @@ public class MenuController : MonoBehaviour
     // Only call UpdateItemSelection if there has been a change in the selection:
     if (prevSelection != selectedItem)
       UpdateItemSelection();
+    
+    // TODO: Implement Save/Load
+    // Notify the GameController about the item selections
+    if (Input.GetKeyDown(KeyCode.Return))
+    {
+      // Event handler that notifies GameController script to SAVE game (Don't save the game here!)
+      OnMenuSelected?.Invoke(selectedItem);
+      CloseMenu();
+    }
+    else if (Input.GetKeyDown(KeyCode.Escape))
+    {
+      OnBack?.Invoke();
+      CloseMenu();
+    }
   }
 
 // Update the selected item in the UI
