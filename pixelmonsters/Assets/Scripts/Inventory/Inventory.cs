@@ -10,7 +10,15 @@ public class Inventory : MonoBehaviour
     // In order to store all types of items, use ItemBase class (ScriptableObject base),
     // which will include inherited classes such as RecoveryItem, etc...
     [SerializeField] private List<ItemSlot> slots;
+    
+    // Property to expose slots
+    public List<ItemSlot> Slots => slots;
 
+    public static Inventory GetInventory()
+    {
+        return FindObjectOfType<PlayerController>().GetComponent<Inventory>();
+        // Find player controller first, then get component
+    }
 }
 
 // This class will behave like a slot, which will hold one type of item and its item count
