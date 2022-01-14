@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -13,6 +15,9 @@ public class InventoryUI : MonoBehaviour
    // Reference to ItemSlotUI prefab
    [SerializeField] private ItemSlotUI itemSlotUI;
 
+   [SerializeField] private Image itemIcon;
+   [SerializeField] private TMP_Text itemDescription;
+   
    private int selectedItem = 0;
 
    private List<ItemSlotUI> slotUIList;
@@ -50,6 +55,8 @@ public class InventoryUI : MonoBehaviour
          // Add instantiated prefab to slotUIList
          slotUIList.Add(slotUIObj);
       }
+      
+      UpdateItemSelection();
    }
 
    public void HandleUpdate(Action OnBack)
@@ -83,5 +90,11 @@ public class InventoryUI : MonoBehaviour
          else
             slotUIList[i].NameText.color = Color.black;
       }
+      // Set the item icon
+      var item = inventory.Slots[selectedItem].Item;
+      itemIcon.sprite = item.Icon;
+      
+      // Set the item decription
+      itemDescription.text = item.Description;
    }
 }
