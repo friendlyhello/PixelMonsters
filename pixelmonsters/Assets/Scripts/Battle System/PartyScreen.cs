@@ -9,6 +9,7 @@ public class PartyScreen : MonoBehaviour
     [SerializeField] private TMP_Text messageText;
     
     private PartyMemberUI[] memberSlots;
+    private List<Monster> monsters;
 
     public void Init()
     {
@@ -17,6 +18,8 @@ public class PartyScreen : MonoBehaviour
 
     public void SetPartyData(List<Monster> monsters)
     {
+        this.monsters = monsters;
+        
         for (int i = 0; i < memberSlots.Length; i++)
         {
             if(i < monsters.Count)
@@ -26,5 +29,16 @@ public class PartyScreen : MonoBehaviour
         }
 
         messageText.text = "Choose a Monster";
+    }
+
+    public void UpdateMemberSelection(int selectedMember)
+    {
+        for (int i = 0; i < monsters.Count; i++)
+        {
+            if(i == selectedMember)
+                memberSlots[i].SetSelected(true);
+            else
+                memberSlots[i].SetSelected(false);
+        } 
     }
 }

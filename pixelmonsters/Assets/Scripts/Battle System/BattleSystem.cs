@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Control the Game States
-public enum BattleState {Start, PlayerAction, PlayerMove, EnemyMove, Busy}
+public enum BattleState {Start, PlayerAction, PlayerMove, EnemyMove, Busy, PartyScreen}
 public class BattleSystem : MonoBehaviour
 {
    // (!) References for Player HUD and Player Unit scripts
@@ -26,6 +26,7 @@ public class BattleSystem : MonoBehaviour
    private BattleState state;
    private int currentAction;
    private int currentMove;
+   private int currentMember;
 
    private MonsterParty playerParty;
    private Monster wildMonster;
@@ -75,6 +76,7 @@ public class BattleSystem : MonoBehaviour
 
    void OpenPartyScreen()
    {
+      state = BattleState.PartyScreen;
       partyScreen.SetPartyData(playerParty.Monsters);
       partyScreen.gameObject.SetActive(true);
    }
@@ -187,6 +189,10 @@ public class BattleSystem : MonoBehaviour
       {
          HandleMoveSelection();
       }
+      else if (state == BattleState.PartyScreen)
+      {
+         HandlePartyScreenSelection();
+      }
    }
    
    void HandleActionSelection()
@@ -255,6 +261,22 @@ public class BattleSystem : MonoBehaviour
          dialogBox.EnableDialogText(true);
          PlayerAction();
       }
+   }
+
+   private void HandlePartyScreenSelection()
+   {
+      if (Input.GetKeyDown(KeyCode.RightArrow))
+         ++currentMember;
+      else if (Input.GetKeyDown(KeyCode.LeftArrow))
+         --currentMember;
+      else if (Input.GetKeyDown(KeyCode.DownArrow))
+         currentMember += 2;
+      else if (Input.GetKeyDown(KeyCode.UpArrow))
+         currentMember -= 2;
+      
+      currentMember = Mathf.Clamp(currentMember, 0, playerParty.Monsters.Count - 1);
+      
+      partyScreen.UpdateMemberSelection(currentMember);
    }
 }
 

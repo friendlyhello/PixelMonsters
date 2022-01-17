@@ -11,6 +11,9 @@ public class PartyMemberUI : MonoBehaviour
    
     // Reference to HPBar class
     [SerializeField] private HPBar hpBar;
+    
+    // Selection Highlighted Colo
+    [SerializeField] private Color highlightedColor;
 
     // Reference to Monster class
     private Monster _monster;
@@ -25,5 +28,13 @@ public class PartyMemberUI : MonoBehaviour
       
         // Thanks to reference to HPBar class, SetHP function can be accessed with dot notation:
         hpBar.SetHP((float)monster.HP / monster.MaxHp); // parameter passed in to HpNormalized in SetHP
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if (selected)
+            nameText.color = highlightedColor;
+        else 
+            nameText.color = Color.black;
     }
 }
