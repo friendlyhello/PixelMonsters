@@ -17,6 +17,9 @@ public class BattleSystem : MonoBehaviour
    
    // (!) Reference to BattleDialogBox class
    [SerializeField] private BattleDialogBox dialogBox;
+   
+   // (!) Reference to Party Screen
+   [SerializeField] private PartyScreen partyScreen;
 
    public event Action<bool> OnBattleOver;
    
@@ -50,6 +53,9 @@ public class BattleSystem : MonoBehaviour
       // Setup the Enemy HUD
       enemyHud.SetData(enemyUnit.Monster);
       
+      // Setup the Party Screen
+      partyScreen.Init();
+      
       // Set and display monster move names
       dialogBox.SetMoveNames(playerUnit.Monster.Moves);
       
@@ -69,7 +75,8 @@ public class BattleSystem : MonoBehaviour
 
    void OpenPartyScreen()
    {
-      Debug.Log("Party Screen");
+      partyScreen.SetPartyData(playerParty.Monsters);
+      partyScreen.gameObject.SetActive(true);
    }
 
    void PlayerMove()
