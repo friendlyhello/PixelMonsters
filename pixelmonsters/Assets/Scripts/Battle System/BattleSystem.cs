@@ -87,7 +87,6 @@ public class BattleSystem : MonoBehaviour
       yield return new WaitForSeconds(1f);
       
       enemyUnit.PlayHitAnimation();
-      
       var damageDetails = enemyUnit.Monster.TakeDamage(move, playerUnit.Monster);
       yield return enemyHud.UpdateHP();
       yield return ShowDamageDetails(damageDetails);
@@ -100,6 +99,7 @@ public class BattleSystem : MonoBehaviour
          yield return new WaitForSeconds(2f);
          OnBattleOver(true);
       }
+
       else
       {
          StartCoroutine(EnemyMove());
@@ -118,7 +118,6 @@ public class BattleSystem : MonoBehaviour
       yield return new WaitForSeconds(1f);
       
       playerUnit.PlayHitAnimation();
-      
       var damageDetails = playerUnit.Monster.TakeDamage(move, playerUnit.Monster);
       yield return playerHud.UpdateHP();
       yield return ShowDamageDetails(damageDetails);
@@ -127,12 +126,29 @@ public class BattleSystem : MonoBehaviour
       {
          yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} Fainted");
          playerUnit.PlayFaintAnimation();
-         
+
          yield return new WaitForSeconds(2f);
-         OnBattleOver(false);
+
+         var nextMonster = playerParty.GetHealthyMonster();
+         if (nextMonster != null)
+         {
+            playerUnit.Setup(nextMonster);
+            playerHud.SetData(nextMonster);
+
+            dialogBox.SetMoveNames(nextMonster.Moves);
+
+            yield return dialogBox.TypeDialog($"Go {nextMonster.Base.Name}!");
+
+            PlayerAction();
+         }
+         else
+         {
+            OnBattleOver(false);
+         }
       }
+
       else
-      {
+      { 
          PlayerAction();
       }
    }
