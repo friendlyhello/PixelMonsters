@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4750910024430573977}
   - component: {fileID: 4750910024430573972}
   - component: {fileID: 7820589455228170630}
+  - component: {fileID: 5689624280649241508}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -138,9 +139,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slots:
   - item: {fileID: 11400000, guid: 9394ba2f8da634b588dad23281ef7f8e, type: 2}
-    count: 12
+    count: 10
+  - item: {fileID: 11400000, guid: 9394ba2f8da634b588dad23281ef7f8e, type: 2}
+    count: 10
+  - item: {fileID: 11400000, guid: 9394ba2f8da634b588dad23281ef7f8e, type: 2}
+    count: 3
   - item: {fileID: 11400000, guid: 5452b70804cf94d96b78acc659cd1830, type: 2}
-    count: 8
+    count: 10
+  - item: {fileID: 11400000, guid: 5452b70804cf94d96b78acc659cd1830, type: 2}
+    count: 9
   - item: {fileID: 11400000, guid: 5485ed5a6eff44eedb41581acfcd4208, type: 2}
     count: 4
   - item: {fileID: 11400000, guid: 35f4b0d6736cf4fcd9bdc1c8f3d6d7e8, type: 2}
@@ -148,11 +155,30 @@ MonoBehaviour:
   - item: {fileID: 11400000, guid: 47b6c92cb6224459c90cf226b68d1b00, type: 2}
     count: 3
   - item: {fileID: 11400000, guid: f540f43fa8c0949e68d452939f90a26f, type: 2}
-    count: 2
+    count: 10
+  - item: {fileID: 11400000, guid: f540f43fa8c0949e68d452939f90a26f, type: 2}
+    count: 3
   - item: {fileID: 11400000, guid: 9dc8c024c11af43b391a9713f1112453, type: 2}
     count: 6
   - item: {fileID: 11400000, guid: d61b70ff86334448db615a6fb5e76171, type: 2}
     count: 3
+--- !u!114 &5689624280649241508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4750910024430573976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586f2b944374c4f839b94ca70f6fb6bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsters:
+  - _base: {fileID: 11400000, guid: 984ab9b6ba89f42c3957a8b3b96f13ba, type: 2}
+    level: 7
+  - _base: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
+    level: 3
 --- !u!1 &4750910024473987078
 GameObject:
   m_ObjectHideFlags: 0

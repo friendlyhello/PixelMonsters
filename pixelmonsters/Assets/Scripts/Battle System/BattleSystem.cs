@@ -23,9 +23,15 @@ public class BattleSystem : MonoBehaviour
    private BattleState state;
    private int currentAction;
    private int currentMove;
+
+   private MonsterParty playerParty;
+   private Monster wildMonster;
    
-   public void StartBattle()
+   public void StartBattle(MonsterParty playerParty, Monster wildMonster)
    {
+      this.playerParty = playerParty;
+      this.wildMonster = wildMonster;
+      
       StartCoroutine(SetupBattle());
    }
 
@@ -33,13 +39,13 @@ public class BattleSystem : MonoBehaviour
    public IEnumerator SetupBattle()
    {
       // Setup the Player Unit
-      playerUnit.Setup();
+      playerUnit.Setup(playerParty.GetHealthyMonster());
       
       // Send data to the Player HUD
       playerHud.SetData(playerUnit.Monster); // Passes in to monster parameter in SetData() in BattleHud class
       
       // Setup the Enemy Unit
-      enemyUnit.Setup();
+      enemyUnit.Setup(wildMonster);
       
       // Setup the Enemy HUD
       enemyHud.SetData(enemyUnit.Monster);
@@ -74,6 +80,7 @@ public class BattleSystem : MonoBehaviour
       state = BattleState.Busy;
 
       var move = playerUnit.Monster.Moves[currentMove];
+      move.PP--;
       yield return dialogBox.TypeDialog($"{playerUnit.Monster.Base.Name} used {move.Base.Name}");
 
       playerUnit.PlayAttackAnimation();
@@ -104,6 +111,7 @@ public class BattleSystem : MonoBehaviour
       state = BattleState.EnemyMove;
 
       var move = enemyUnit.Monster.GetRandomMove();
+      move.PP--;
       yield return dialogBox.TypeDialog($"{enemyUnit.Monster.Base.Name} used {move.Base.Name}");
 
       enemyUnit.PlayAttackAnimation();

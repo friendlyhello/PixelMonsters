@@ -7,10 +7,6 @@ using DG.Tweening;
 
 public class BattleUnit : MonoBehaviour
 {
-    // Reference to MonsterBase and Level
-    [SerializeField] private MonsterBase _base;
-    [SerializeField] private int level;
-    
     // Bool to determine if it is a Player Unit or a Monster Unit
     [SerializeField] private bool isPlayerUnit;
     
@@ -32,10 +28,10 @@ public class BattleUnit : MonoBehaviour
     public Monster Monster { get; set; }
 
     // Function that will create a Monster with _base and level 
-    public void Setup()
+    public void Setup(Monster monster)
     {
         // Set Monster (reference created above) to Monster constructor 
-        Monster = new Monster(_base, level);
+        Monster = monster;
         
         // If it's a Player Unit, set image sprite of Player Unit (The back-facing one) with a monster sprite
         if (isPlayerUnit)

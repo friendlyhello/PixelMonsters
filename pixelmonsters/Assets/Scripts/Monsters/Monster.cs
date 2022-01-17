@@ -1,16 +1,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Monster
 {
+    [SerializeField] private MonsterBase _base;
+    [SerializeField] private int level;
+
     // (!) C# Monster Class calculates all the values specific to a Monster's Level
 
     // (!)  Reference to Monster Base Class in order to access all base data
     //      These two values can be used to calculate all the base levels for the Monsters
 
     // These were private but then changed to properties so they can be accessed outside of the class.
-    public MonsterBase Base { get; set; }
-    public int Level { get; set; }
+    public MonsterBase Base { 
+        get {
+            return _base;
+        }
+    }
+
+    public int Level {
+        get {
+            return level; 
+        }
+    }
 
     // Current monster HP
     public int HP { get; set; }
@@ -19,10 +32,8 @@ public class Monster
     public List<Move> Moves { get; set; }
 
     // Monster constructor
-    public Monster(MonsterBase pBase, int pLevel)
+    public void Init()
     {
-        Base = pBase;
-        Level = pLevel;
         HP = MaxHp;
 
         // (!) Generate monster moves based on level
@@ -92,9 +103,12 @@ public class Monster
             Fainted = false
         };
 
+        float attack = (move.Base.IsSpecial) ? attacker.spAttack : attacker.Attack;
+        float defense = (move.Base.IsSpecial) ? spDefense : Defense;
+
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
-        float d = a * move.Base.Power * ((float)attacker.Attack / Defense) + 2;
+        float d = a * move.Base.Power * ((float) attack / defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
 
         HP -= damage;

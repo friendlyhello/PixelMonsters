@@ -17,17 +17,26 @@ public class InventoryUI : MonoBehaviour
 
    [SerializeField] private Image itemIcon;
    [SerializeField] private TMP_Text itemDescription;
+
+   [SerializeField] private Image upArrow;
+   [SerializeField] private Image downArrow;
    
    private int selectedItem = 0;
-
+   
+   const int itemsInViewport = 8;
+   
    private List<ItemSlotUI> slotUIList;
 
    // Get List of ItemSlots from InventoryUI script - needed here to show list in UI
    // cached reference:
    private Inventory inventory;
+   
+   // Cache reference 
+   private RectTransform itemListRect;
    private void Awake()
    {
       inventory = Inventory.GetInventory();
+      itemListRect = itemList.GetComponent<RectTransform>();
    }
 
    private void Start()
@@ -96,5 +105,26 @@ public class InventoryUI : MonoBehaviour
       
       // Set the item decription
       itemDescription.text = item.Description;
+
+      HandleScrolling();
+   }
+
+   void HandleScrolling()
+   {
+      // Get height of itemSlot
+      float scrollPos = Mathf.Clamp(selectedItem - itemsInViewport / 2, 0, selectedItem) * slotUIList[0].Height;
+      
+      // Set y position of itemList
+      // (!)   Cache reference here, item UI is buried in UI Canvas prefab,
+      //       so can't use normal rect transform)
+      itemListRect.localPosition = new Vector2(itemListRect.localPosition.x, scrollPos);
+
+      // Condition: Show up arrow if there are more than four items at the bottom of the items list in viewport
+      bool showUpArrow = selectedItem > itemsInViewport / 2;
+      upArrow.gameObject.SetActive(showUpArrow);
+      
+      // Condition: Show down arrow if there are more items bellow what is seen in viewport
+      bool showDownArrow = selectedItem + itemsInViewport / 2 < slotUIList.Count;
+      downArrow.gameObject.SetActive(showDownArrow);
    }
 }

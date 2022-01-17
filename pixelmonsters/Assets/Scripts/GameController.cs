@@ -20,6 +20,12 @@ public class GameController : MonoBehaviour
   private void Awake()
   {
     menuController = GetComponent<MenuController>();
+    
+    // Lock cursor
+    Cursor.lockState = CursorLockMode.Locked;
+    
+    // Hide cursor
+    Cursor.visible = false;
   }
 
   // Subscribe to events
@@ -43,7 +49,10 @@ public class GameController : MonoBehaviour
     battleSystem.gameObject.SetActive(true);
     worldCamera.gameObject.SetActive(false);
 
-    battleSystem.StartBattle();
+    var playerParty = playerController.GetComponent<MonsterParty>();
+    var wildMonster = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomWildMonster();
+    
+    battleSystem.StartBattle(playerParty, wildMonster);
   }
 
   void EndBattle(bool won)
