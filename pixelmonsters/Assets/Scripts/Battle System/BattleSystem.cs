@@ -146,14 +146,7 @@ public class BattleSystem : MonoBehaviour
          var nextMonster = playerParty.GetHealthyMonster();
          if (nextMonster != null)
          {
-            playerUnit.Setup(nextMonster);
-            playerHud.SetData(nextMonster);
-
-            dialogBox.SetMoveNames(nextMonster.Moves);
-
-            yield return dialogBox.TypeDialog($"Go {nextMonster.Base.Name}!");
-
-            PlayerAction();
+            OpenPartyScreen();
          }
          else
          {
@@ -307,9 +300,12 @@ public class BattleSystem : MonoBehaviour
 
    IEnumerator SwitchMonster(Monster newMonster)
    {
-      yield return dialogBox.TypeDialog($"Come back {playerUnit.Monster.Base.Name}!");
-      playerUnit.PlayFaintAnimation();
-      yield return new WaitForSeconds(2.0f);
+      if (playerUnit.Monster.HP > 0)
+      {
+         yield return dialogBox.TypeDialog($"Come back {playerUnit.Monster.Base.Name}!");
+         playerUnit.PlayFaintAnimation();
+         yield return new WaitForSeconds(2.0f);
+      }
       
       playerUnit.Setup(newMonster);
       playerHud.SetData(newMonster);
