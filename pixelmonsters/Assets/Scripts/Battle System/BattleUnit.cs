@@ -9,6 +9,17 @@ public class BattleUnit : MonoBehaviour
 {
     // Bool to determine if it is a Player Unit or a Monster Unit
     [SerializeField] private bool isPlayerUnit;
+    [SerializeField] private BattleHud hud;
+    
+    // Expose isPlayerUnit
+    public bool IsPlayerUnit {
+        get { return isPlayerUnit; }
+    }
+    
+    // Expose HUD
+    public BattleHud Hud {
+        get { return hud; }
+    }
     
     // Cache reference to image in Awake
     private Image image;
@@ -44,6 +55,8 @@ public class BattleUnit : MonoBehaviour
             image.sprite = Monster.Base.FrontSprite;
         }
 
+        hud.SetData(monster);
+        
         image.color = originalColor;
         PlayEnterAnimation();
     }
