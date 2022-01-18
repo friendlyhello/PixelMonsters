@@ -31,7 +31,7 @@ public class Monster
     // These are the moves the monsters actually have, not the moves they learn
     public List<Move> Moves { get; set; }
 
-    // Monster constructor
+    // Initialize (Init) Monster
     public void Init()
     {
         HP = MaxHp;

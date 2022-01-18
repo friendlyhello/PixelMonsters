@@ -277,6 +277,46 @@ public class BattleSystem : MonoBehaviour
       currentMember = Mathf.Clamp(currentMember, 0, playerParty.Monsters.Count - 1);
       
       partyScreen.UpdateMemberSelection(currentMember);
+
+      if (Input.GetKeyDown(KeyCode.Return))
+      {
+         var selectedMember = playerParty.Monsters[currentMember];
+         if (selectedMember.HP <= 0)
+         {
+            partyScreen.SetMessageText("You can't send out FAINTED monsters!");
+            return;
+         }
+
+         if (selectedMember == playerUnit.Monster)
+         {
+            partyScreen.SetMessageText("You can't switch with the SAME monster!");
+            return;
+         }
+         
+         partyScreen.gameObject.SetActive(false);
+         state = BattleState.Busy;
+         StartCoroutine(SwitchMonster(selectedMember));
+      }
+      
+      else if (Input.GetKeyDown(KeyCode.Escape))
+      {
+         partyScreen.gameObject.SetActive(false);
+         PlayerAction();
+      }
+   }
+
+   IEnumerator SwitchMonster(Monster newMonster)
+   {
+      yield return dialogBox.TypeDialog($"Come back {playerUnit.Monster.Base.Name}!");
+      playerUnit.PlayFaintAnimation();
+      yield return new WaitForSeconds(2.0f);
+      
+      playerUnit.Setup(newMonster);
+      playerHud.SetData(newMonster);
+      dialogBox.SetMoveNames(newMonster.Moves);
+      yield return dialogBox.TypeDialog($"Go {newMonster.Base.Name}!");
+
+      StartCoroutine(EnemyMove());
    }
 }
 

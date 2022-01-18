@@ -179,6 +179,12 @@ MonoBehaviour:
     level: 7
   - _base: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
     level: 3
+  - _base: {fileID: 11400000, guid: 984ab9b6ba89f42c3957a8b3b96f13ba, type: 2}
+    level: 5
+  - _base: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
+    level: 7
+  - _base: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
+    level: 8
 --- !u!1 &4750910024473987078
 GameObject:
   m_ObjectHideFlags: 0
