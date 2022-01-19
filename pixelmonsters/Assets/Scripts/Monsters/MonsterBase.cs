@@ -142,6 +142,15 @@ public enum MonsterType
     Dragon
 }
 
+public enum Stat
+{
+    Attack,
+    Defense,
+    SpAttack,
+    SpDefense,
+    Speed
+}
+
 public class TypeChart
 {
     static readonly float[][] chart =

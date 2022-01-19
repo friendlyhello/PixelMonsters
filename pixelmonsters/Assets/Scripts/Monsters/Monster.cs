@@ -30,12 +30,13 @@ public class Monster
 
     // These are the moves the monsters actually have, not the moves they learn
     public List<Move> Moves { get; set; }
+    public Dictionary<Stat, int> Stats { get; private set; }
+    
+    public Dictionary<Stat, int> StatBoosts { get; private set; }
 
     // Initialize (Init) Monster
     public void Init()
     {
-        HP = MaxHp;
-
         // (!) Generate monster moves based on level
 
         // Initially set moves to empty list
@@ -54,39 +55,87 @@ public class Monster
             if (Moves.Count >= 4)
                 break;
         }
+        
+        CalculateStats();
+        
+        HP = MaxHp;
+
+        StatBoosts = new Dictionary<Stat, int>()
+        {
+            {Stat.Attack, 0},
+            {Stat.Defense, 0},
+            {Stat.SpAttack, 0},
+            {Stat.SpDefense, 0},
+            {Stat.Speed, 0},
+        };
+    }
+
+    void CalculateStats()
+    {
+        Stats = new Dictionary<Stat, int>();
+        
+        // Calculate and store the value for each stat
+        Stats.Add(Stat.Attack, Mathf.FloorToInt((Base.Attack * Level) / 100.0f) + 5);
+        Stats.Add(Stat.Defense, Mathf.FloorToInt((Base.Defense * Level) / 100.0f) + 5);
+        Stats.Add(Stat.SpAttack, Mathf.FloorToInt((Base.SpAttack * Level) / 100.0f) + 5);
+        Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100.0f) + 5);
+        Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100.0f) + 5);
+
+        MaxHp = Mathf.FloorToInt((Base.Speed * Level) / 100f) + 10;
+    }
+
+    int GetStat(Stat stat)
+    {
+        int statVal = Stats[stat];
+        
+        // Apply stat boost
+        int boost = StatBoosts[stat];
+        var boostValues = new float[] {1f, 1.5f, 2f, 2.5f, 3f, 3.5f, 4f};
+
+        if (boost >= 0)
+            statVal = Mathf.FloorToInt(statVal * boostValues[boost]);
+        else
+            statVal = Mathf.FloorToInt(statVal / boostValues[-boost]);
+        
+        return statVal;
+    }
+
+    public void ApplyBoosts(List<StatBoost> statBoosts)
+    {
+        foreach (var statBoost in statBoosts)
+        {
+            var stat = statBoost.stat;
+            var boost = statBoost.boost;
+
+            StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+            
+            Debug.Log($"{stat} has been BOOSTED to {StatBoosts[stat]}");
+        }
     }
 
     // Properties to get stats from Monster Base Class
     public int Attack
     {
         // This is the actual formula used in the Pokemón game
-        get { return Mathf.FloorToInt((Base.Attack * Level) / 100.0f) + 5; }
+        get { return GetStat(Stat.Attack); }
     }
-
     public int Defense
     {
-        get { return Mathf.FloorToInt((Base.Defense * Level) / 100.0f) + 5; }
+        get { return GetStat(Stat.Defense); }
     }
-
     public int spAttack
     {
-        get { return Mathf.FloorToInt((Base.SpAttack * Level) / 100.0f) + 5; }
+        get { return GetStat(Stat.SpAttack); }
     }
-
     public int spDefense
     {
-        get { return Mathf.FloorToInt((Base.SpDefense * Level) / 100.0f) + 5; }
+        get { return GetStat(Stat.SpDefense); }
     }
-
     public int Speed
     {
-        get { return Mathf.FloorToInt((Base.Speed * Level) / 100.0f) + 5; }
+        get { return GetStat(Stat.Speed); }
     }
-
-    public int MaxHp
-    {
-        get { return Mathf.FloorToInt((Base.MaxHp * Level) / 100.0f) + 10; }
-    }
+    public int MaxHp { get; private set; }
 
     public DamageDetails TakeDamage(Move move, Monster attacker)
     {
@@ -103,8 +152,8 @@ public class Monster
             Fainted = false
         };
 
-        float attack = (move.Base.IsSpecial) ? attacker.spAttack : attacker.Attack;
-        float defense = (move.Base.IsSpecial) ? spDefense : Defense;
+        float attack = (move.Base.Category == MoveCategory.Special) ? attacker.spAttack : attacker.Attack;
+        float defense = (move.Base.Category == MoveCategory.Special) ? spDefense : Defense;
 
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;

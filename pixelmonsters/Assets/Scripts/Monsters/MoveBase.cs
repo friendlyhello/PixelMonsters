@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
     [CreateAssetMenu(fileName = "Move", menuName = "Monster/Create New Move")]
@@ -13,6 +14,9 @@ using UnityEngine;
     [SerializeField] private int accuracy;
     [SerializeField] private int pp;
 
+    [SerializeField] private MoveCategory category;
+    [SerializeField] private MoveEffects effects;
+    [SerializeField] private MoveTarget target;
     // (!) Properties that return the values entered in the scriptable object
     public string Name
     {
@@ -44,17 +48,50 @@ using UnityEngine;
         get { return pp; }
     }
     
-    public bool IsSpecial {
-        get {
-            if (type == MonsterType.Fire || type == MonsterType.Water || type == MonsterType.Grass
-                || type == MonsterType.Ice || type == MonsterType.Electric || type == MonsterType.Dragon)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+    // Expose category property
+    public MoveCategory Category
+    {
+        get { return category; }
     }
+
+    public MoveEffects Effects
+    {
+        get { return effects; }
+    }
+
+    public MoveTarget Target
+    {
+        get { return target; }
+    }
+}
+
+[System.Serializable] // Expose in Inspector
+public class MoveEffects
+{
+    [SerializeField] private List<StatBoost> boosts;
+
+    public List<StatBoost> Boosts
+    {
+        get { return boosts; }
+    }
+}
+
+[System.Serializable] // Expose in Inspector
+public class StatBoost
+{
+    public Stat stat;
+    public int boost;
+}
+
+public enum MoveCategory
+{
+    Physical,
+    Special,
+    Status
+}
+
+public enum MoveTarget
+{
+    Foe,
+    Self
 }
