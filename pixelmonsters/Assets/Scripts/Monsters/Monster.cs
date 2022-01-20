@@ -31,8 +31,9 @@ public class Monster
     // These are the moves the monsters actually have, not the moves they learn
     public List<Move> Moves { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
-    
     public Dictionary<Stat, int> StatBoosts { get; private set; }
+
+    public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
 
     // Initialize (Init) Monster
     public void Init()
@@ -57,17 +58,9 @@ public class Monster
         }
         
         CalculateStats();
-        
         HP = MaxHp;
-
-        StatBoosts = new Dictionary<Stat, int>()
-        {
-            {Stat.Attack, 0},
-            {Stat.Defense, 0},
-            {Stat.SpAttack, 0},
-            {Stat.SpDefense, 0},
-            {Stat.Speed, 0},
-        };
+        
+        ResetStatBoost();
     }
 
     void CalculateStats()
@@ -84,6 +77,18 @@ public class Monster
         MaxHp = Mathf.FloorToInt((Base.Speed * Level) / 100f) + 10;
     }
 
+    void ResetStatBoost()
+    {
+        StatBoosts = new Dictionary<Stat, int>()
+        {
+            {Stat.Attack, 0},
+            {Stat.Defense, 0},
+            {Stat.SpAttack, 0},
+            {Stat.SpDefense, 0},
+            {Stat.Speed, 0},
+        };
+    }
+    
     int GetStat(Stat stat)
     {
         int statVal = Stats[stat];
@@ -108,6 +113,11 @@ public class Monster
             var boost = statBoost.boost;
 
             StatBoosts[stat] = Mathf.Clamp(StatBoosts[stat] + boost, -6, 6);
+            
+            if(boost > 0)
+                StatusChanges.Enqueue($"{Base.Name}'s {stat} rose!");
+            else
+                StatusChanges.Enqueue($"{Base.Name}'s {stat} fell!");    
             
             Debug.Log($"{stat} has been BOOSTED to {StatBoosts[stat]}");
         }
@@ -174,6 +184,11 @@ public class Monster
     {
         int r = Random.Range(0, Moves.Count);
         return Moves[r];
+    }
+
+    public void OnBattleOver()
+    {
+        ResetStatBoost();
     }
 }
 
