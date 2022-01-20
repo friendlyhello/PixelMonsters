@@ -32,6 +32,8 @@ public class Monster
     public List<Move> Moves { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
+    
+    public Condition Status { get; private set; }
 
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
 
@@ -180,6 +182,12 @@ public class Monster
         return damageDetails;
     }
 
+    public void SetStatus(ConditionID conditionId)
+    {
+        Status = ConditionsDB.Conditions[conditionId];
+        StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+    }
+    
     public Move GetRandomMove()
     {
         int r = Random.Range(0, Moves.Count);

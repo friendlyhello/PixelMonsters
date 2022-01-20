@@ -141,7 +141,6 @@ public class BattleSystem : MonoBehaviour
          yield return ShowDamageDetails(damageDetails);
       }
 
-
       if (targetUnit.Monster.HP <= 0)
       {
          yield return dialogBox.TypeDialog($"{targetUnit.Monster.Base.Name} Fainted");
@@ -155,8 +154,7 @@ public class BattleSystem : MonoBehaviour
    IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
    {
       var effects = move.Base.Effects;
-         
-      if (effects != null)
+      if (effects.Boosts != null)
       {
          if(move.Base.Target == MoveTarget.Self)
             source.ApplyBoosts(effects.Boosts);
@@ -164,6 +162,11 @@ public class BattleSystem : MonoBehaviour
             target.ApplyBoosts(effects.Boosts);
       }
 
+      if (effects.Status != ConditionID.none)
+      {
+         target.SetStatus(effects.Status);
+      }
+      
       yield return ShowStatusChanges(source);
       yield return ShowStatusChanges(target);
    }

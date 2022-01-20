@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+    using System.Collections.Generic;
 using UnityEngine;
 
     [CreateAssetMenu(fileName = "Move", menuName = "Monster/Create New Move")]
@@ -69,10 +69,14 @@ using UnityEngine;
 public class MoveEffects
 {
     [SerializeField] private List<StatBoost> boosts;
+    [SerializeField] private ConditionID status;
 
-    public List<StatBoost> Boosts
-    {
+    public List<StatBoost> Boosts {
         get { return boosts; }
+    }
+
+    public ConditionID Status {
+        get { return status; }
     }
 }
 
