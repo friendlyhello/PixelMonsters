@@ -122,6 +122,15 @@ public class BattleSystem : MonoBehaviour
 
    IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
    {
+      bool canRunMove = sourceUnit.Monster.OnBeforeMove();
+      if (!canRunMove)
+      {
+         yield return ShowStatusChanges(sourceUnit.Monster);
+         yield break;
+      }
+      
+      yield return ShowStatusChanges(sourceUnit.Monster);
+      
       move.PP--;
       yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}");
 

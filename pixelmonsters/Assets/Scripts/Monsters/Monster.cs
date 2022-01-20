@@ -34,7 +34,9 @@ public class Monster
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     
     public Condition Status { get; private set; }
-
+    
+    public int StatusTime { get; set; }
+    
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
 
     public bool hpChanged { get; set; }
@@ -188,7 +190,13 @@ public class Monster
     public void SetStatus(ConditionID conditionId)
     {
         Status = ConditionsDB.Conditions[conditionId];
+        Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+    }
+
+    public void CureStatus()
+    {
+        Status = null; 
     }
     
     public Move GetRandomMove()
@@ -197,6 +205,16 @@ public class Monster
         return Moves[r];
     }
 
+    public bool OnBeforeMove()
+    {
+        if (Status?.OnBeforeMove != null)
+        {
+            return Status.OnBeforeMove(this);
+        }
+        
+        return true;
+    }
+    
     public void OnAfterTurn()
     {
         // I didn't know you could use ? twice, or on multiple times
