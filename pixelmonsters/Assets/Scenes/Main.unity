@@ -11749,6 +11749,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5689624280649241508, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
+      propertyPath: monsters.Array.data[0]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 77ca6375a28fe4f608304e3302a31991, type: 2}
+    - target: {fileID: 5689624280649241508, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
+      propertyPath: monsters.Array.data[0].level
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
 --- !u!1001 &8870382999899779058

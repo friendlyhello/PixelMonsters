@@ -148,8 +148,22 @@ public class BattleSystem : MonoBehaviour
          yield return new WaitForSeconds(2f);
          
          CheckForBattleOver(targetUnit);
-      }  
+      }
+      
+      // Status effects like brn or psn will hurt the monster after the turn
+      sourceUnit.Monster.OnAfterTurn();
+      yield return ShowStatusChanges(sourceUnit.Monster);
+      yield return sourceUnit.Hud.UpdateHP();
+      if (sourceUnit.Monster.HP <= 0)
+      {
+         yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name} Fainted");
+         sourceUnit.PlayFaintAnimation();
+         yield return new WaitForSeconds(2f);
+         
+         CheckForBattleOver(sourceUnit);
+      }
    }
+   
 
    IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
    {

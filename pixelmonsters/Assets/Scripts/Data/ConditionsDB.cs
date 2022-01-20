@@ -14,7 +14,14 @@ public class ConditionsDB
             new Condition() 
             {
                 Name = "Poison",
-                StartMessage = "has been Poisoned!"
+                StartMessage = "has been Poisoned!",
+                
+                // Lamda function to define function while assigning it 
+                OnAfterTurn = (Monster monster) =>
+                {
+                    monster.UpdateHP(monster.MaxHp / 8);
+                    monster.StatusChanges.Enqueue($"{monster.Base.Name} hurt itself due to POISON");
+                }
             }
         }
     };
