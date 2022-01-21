@@ -41,6 +41,8 @@ public class Monster
 
     public bool hpChanged { get; set; }
 
+    public event System.Action OnStatusChanged;
+
     // Initialize (Init) Monster
     public void Init()
     {
@@ -80,7 +82,7 @@ public class Monster
         Stats.Add(Stat.SpDefense, Mathf.FloorToInt((Base.SpDefense * Level) / 100.0f) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt((Base.Speed * Level) / 100.0f) + 5);
 
-        MaxHp = Mathf.FloorToInt((Base.Speed * Level) / 100f) + 10;
+        MaxHp = Mathf.FloorToInt((Base.Speed * Level) / 100f) + 10 + Level;
     }
 
     void ResetStatBoost()
@@ -159,7 +161,8 @@ public class Monster
         if (Random.value * 100f <= 6.25f)
             critical = 2f;
 
-        float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) * TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
+        float type = TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type1) *
+                     TypeChart.GetEffectiveness(move.Base.Type, this.Base.Type2);
 
         var damageDetails = new DamageDetails()
         {
@@ -189,14 +192,18 @@ public class Monster
 
     public void SetStatus(ConditionID conditionId)
     {
+        if (Status != null) return;
+        
         Status = ConditionsDB.Conditions[conditionId];
         Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{Base.Name} {Status.StartMessage}");
+        OnStatusChanged?.Invoke();
     }
 
     public void CureStatus()
     {
         Status = null; 
+        OnStatusChanged?.Invoke();
     }
     
     public Move GetRandomMove()

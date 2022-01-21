@@ -5,6 +5,17 @@ using UnityEngine;
 // This class stores instances of Condition class
 public class ConditionsDB
 {
+    public static void Init()
+    {
+        foreach (var kvp in Conditions)
+        {
+            var conditionId = kvp.Key;
+            var condition = kvp.Value;
+
+            condition.Id = conditionId;
+        }
+    }
+    
     // Store list of conditions, static so no need to create instances of ConditionsDB class
     public static Dictionary<ConditionID, Condition> Conditions { get; set; } = new Dictionary<ConditionID, Condition>() 
     {

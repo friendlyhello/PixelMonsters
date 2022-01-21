@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour
 
   private void Awake()
   {
+    ConditionsDB.Init();
+    
     menuController = GetComponent<MenuController>();
     
     // Lock cursor
