@@ -176,6 +176,7 @@ public class BattleSystem : MonoBehaviour
 
    IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
    {
+      // Stat boosting
       var effects = move.Base.Effects;
       if (effects.Boosts != null)
       {
@@ -185,9 +186,16 @@ public class BattleSystem : MonoBehaviour
             target.ApplyBoosts(effects.Boosts);
       }
 
+      // Status condition
       if (effects.Status != ConditionID.none)
       {
          target.SetStatus(effects.Status);
+      }
+      
+      // Volatile status condition
+      if (effects.VolatileStatus != ConditionID.none)
+      {
+         target.SetVolatileStatus(effects.VolatileStatus);
       }
       
       yield return ShowStatusChanges(source);

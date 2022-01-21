@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monsters:
   - _base: {fileID: 11400000, guid: 984ab9b6ba89f42c3957a8b3b96f13ba, type: 2}
-    level: 8
+    level: 10
   - _base: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
     level: 10
   - _base: {fileID: 11400000, guid: 77ca6375a28fe4f608304e3302a31991, type: 2}

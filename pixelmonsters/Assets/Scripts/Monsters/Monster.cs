@@ -37,6 +37,9 @@ public class Monster
     
     public int StatusTime { get; set; }
     
+    public Condition VolatileStatus { get; private set; }
+    public int VolatileStatusTime { get; set; }
+    
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
 
     public bool hpChanged { get; set; }
@@ -69,6 +72,8 @@ public class Monster
         HP = MaxHp;
         
         ResetStatBoost();
+        Status = null;
+        VolatileStatus = null;
     }
 
     void CalculateStats()
@@ -206,6 +211,20 @@ public class Monster
         OnStatusChanged?.Invoke();
     }
     
+    public void SetVolatileStatus(ConditionID conditionId)
+    {
+        if (VolatileStatus != null) return;
+        
+        VolatileStatus = ConditionsDB.Conditions[conditionId];
+        VolatileStatus?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{Base.Name} {VolatileStatus.StartMessage}");
+    }
+    
+    public void CureVolatileStatus()
+    {
+        VolatileStatus = null;
+    }
+    
     public Move GetRandomMove()
     {
         int r = Random.Range(0, Moves.Count);
@@ -214,22 +233,36 @@ public class Monster
 
     public bool OnBeforeMove()
     {
+        bool canPerformMove = true;
         if (Status?.OnBeforeMove != null)
         {
-            return Status.OnBeforeMove(this);
+            if (!Status.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
         }
         
-        return true;
+        if (VolatileStatus?.OnBeforeMove != null)
+        {
+            if (!VolatileStatus.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
+        }
+        
+        return canPerformMove;
     }
     
     public void OnAfterTurn()
     {
         // I didn't know you could use ? twice, or on multiple times
         Status?.OnAfterTurn?.Invoke(this);
+        VolatileStatus?.OnAfterTurn?.Invoke(this);
     }
 
     public void OnBattleOver()
     {
+        VolatileStatus = null;
         ResetStatBoost();
     }
 }

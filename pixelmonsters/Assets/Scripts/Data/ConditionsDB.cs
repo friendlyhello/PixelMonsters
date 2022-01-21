@@ -117,11 +117,46 @@ public class ConditionsDB
                     return false;
                 }
             }
+        },
+        {
+            ConditionID.confusion,
+            new Condition() 
+            {
+                Name = "Confusion",
+                StartMessage = "is confused!",
+                
+                OnStart = (Monster monster) =>
+                { 
+                    // Sleep for 1 - 3 turns
+                    monster.VolatileStatusTime = Random.Range(1, 4);
+                    Debug.Log($"Will be confused for {monster.VolatileStatusTime} moves");
+                },
+                
+                OnBeforeMove = (Monster monster) =>
+                {
+                    if (monster.VolatileStatusTime <= 0)
+                    {
+                        monster.CureVolatileStatus();
+                        monster.StatusChanges.Enqueue($"{monster.Base.Name} kicked out of confusion!");
+                        return true;
+                    }
+
+                    monster.VolatileStatusTime--;
+
+                    if (Random.Range(1, 3) == 1)
+                        return true;
+                    
+                    monster.StatusChanges.Enqueue($"{monster.Base.Name} is confused!");
+                    monster.UpdateHP(monster.HP / 8);
+                    monster.StatusChanges.Enqueue($"Hurt itself due to confusion");
+                    return false;
+                }
+            }
         }
     };
 }
 
 public enum ConditionID
 {
-    none, psn, brn, slp, par, frz
+    none, psn, brn, slp, par, frz, confusion
 }
