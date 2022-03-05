@@ -129,37 +129,51 @@ public class BattleSystem : MonoBehaviour
          yield return sourceUnit.Hud.UpdateHP();
          yield break;
       }
-      
+
       yield return ShowStatusChanges(sourceUnit.Monster);
       
       move.PP--;
       yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name} used {move.Base.Name}");
 
-      sourceUnit.PlayAttackAnimation();
-      yield return new WaitForSeconds(1f);
-      targetUnit.PlayHitAnimation();
-
-      if (move.Base.Category == MoveCategory.Status)
+      // Check if move hits logic
+      if (CheckIfMoveHits(move, sourceUnit.Monster, targetUnit.Monster))
       {
-         yield return (RunMoveEffects(move, sourceUnit.Monster, targetUnit.Monster));
-      }
+         sourceUnit.PlayAttackAnimation();
+         yield return new WaitForSeconds(1f);
+         targetUnit.PlayHitAnimation();
 
-      else
-      {
-         var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
-         yield return targetUnit.Hud.UpdateHP();
-         yield return ShowDamageDetails(damageDetails);
-      }
+         if (move.Base.Category == MoveCategory.Status)
+         {
+            yield return (RunMoveEffects(move, sourceUnit.Monster, targetUnit.Monster));
+         }
 
-      if (targetUnit.Monster.HP <= 0)
-      {
-         yield return dialogBox.TypeDialog($"{targetUnit.Monster.Base.Name} Fainted");
-         targetUnit.PlayFaintAnimation();
-         yield return new WaitForSeconds(2f);
-         
-         CheckForBattleOver(targetUnit);
+         else
+         {
+            var damageDetails = targetUnit.Monster.TakeDamage(move, sourceUnit.Monster);
+            yield return targetUnit.Hud.UpdateHP();
+            yield return ShowDamageDetails(damageDetails);
+         }
+
+         if (move.Base.Secondaries != null && move.Base.Secondaries.Count > 0)
+         {
+            
+         }
+
+         if (targetUnit.Monster.HP <= 0)
+         {
+            yield return dialogBox.TypeDialog($"{targetUnit.Monster.Base.Name} Fainted");
+            targetUnit.PlayFaintAnimation();
+            yield return new WaitForSeconds(2f);
+
+            CheckForBattleOver(targetUnit);
+         }
       }
       
+      else
+      {
+         yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name}'s Attack Missed!");
+      }
+
       // Status effects like brn or psn will hurt the monster after the turn
       sourceUnit.Monster.OnAfterTurn();
       yield return ShowStatusChanges(sourceUnit.Monster);
@@ -171,10 +185,9 @@ public class BattleSystem : MonoBehaviour
          yield return new WaitForSeconds(2f);
          
          CheckForBattleOver(sourceUnit);
-      }
+      } 
    }
    
-
    IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
    {
       // Stat boosting
@@ -201,6 +214,36 @@ public class BattleSystem : MonoBehaviour
       
       yield return ShowStatusChanges(source);
       yield return ShowStatusChanges(target);
+   }
+
+   bool CheckIfMoveHits(Move move, Monster source, Monster target)
+   {
+      if (move.Base.AlwaysHits)
+         return true;
+      
+      // (!) Check if random number between 1 - 100 is <= new move accuracy number
+      // (if it will hit or not)
+
+      // accuracy variable
+      float moveAccuracy = move.Base.Accuracy;
+
+      int accuracy = source.StatBoosts[Stat.Accuracy];
+      int evasion = target.StatBoosts[Stat.Evasion];
+
+      var boostValues = new float[] {1f, 4f / 3f, 5f / 3f, 2f, 7f / 3f, 8f / 3f, 3f};
+
+      if (accuracy > 0)
+         moveAccuracy *= boostValues[accuracy];
+      else
+         moveAccuracy /= boostValues[-accuracy];
+      
+      if (evasion > 0)
+         moveAccuracy /= boostValues[evasion];
+      else
+         moveAccuracy *= boostValues[-evasion];
+      
+      // Random number generated, if generated number is <= move accuracy, move will hit
+      return UnityEngine.Random.Range(1, 101) <= moveAccuracy;
    }
    
    IEnumerator ShowStatusChanges(Monster monster)

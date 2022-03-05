@@ -1,10 +1,10 @@
-    using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
     [CreateAssetMenu(fileName = "Move", menuName = "Monster/Create New Move")]
     
-    public class MoveBase : ScriptableObject
-{
+    public class MoveBase : ScriptableObject {
+        
     [SerializeField] private new string name;
 
     [TextArea] [SerializeField] private string description;
@@ -12,55 +12,71 @@ using UnityEngine;
     [SerializeField] private MonsterType type;
     [SerializeField] private int power;
     [SerializeField] private int accuracy;
+    [SerializeField] private bool alwaysHits;
     [SerializeField] private int pp;
 
     [SerializeField] private MoveCategory category;
     [SerializeField] private MoveEffects effects;
+    [SerializeField] private List<SecondaryEffects> secondaries;
     [SerializeField] private MoveTarget target;
+    
     // (!) Properties that return the values entered in the scriptable object
-    public string Name
-    {
+    public string Name {
         get { return name; }
     }
     
-    public string Description
-    {
+    public string Description {
         get { return description; }
     }
 
-    public MonsterType Type
-    {
+    public MonsterType Type {
         get { return type; }
     }
 
-    public int Power
-    {
+    public int Power {
         get { return power; }
     }
 
-    public int Accuracy
-    {
+    public int Accuracy {
         get { return accuracy; }
     }
+    
+    public bool AlwaysHits {
+        get { return alwaysHits; }
+    }
 
-    public int PP
-    {
+    public int PP {
         get { return pp; }
     }
     
     // Expose category property
-    public MoveCategory Category
-    {
+    public MoveCategory Category {
         get { return category; }
     }
 
-    public MoveEffects Effects
-    {
+    public MoveEffects Effects {
         get { return effects; }
     }
 
-    public MoveTarget Target
-    {
+    public List<SecondaryEffects> Secondaries {
+        get { return secondaries; }
+    }
+
+    public MoveTarget Target {
+        get { return target; }
+    }
+}
+
+public class SecondaryEffects : MoveEffects
+{
+    [SerializeField] private int chance;
+    [SerializeField] private MoveTarget target;
+
+    public int Chance {
+        get { return chance; }
+    }
+
+    public MoveTarget Target {
         get { return target; }
     }
 }
@@ -79,6 +95,8 @@ public class MoveEffects
     public ConditionID Status {
         get { return status; }
     }
+
+    
     
     public ConditionID VolatileStatus {
         get { return volatileStatus; }
