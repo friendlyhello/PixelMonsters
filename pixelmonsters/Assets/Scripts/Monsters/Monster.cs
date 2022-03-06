@@ -30,6 +30,7 @@ public class Monster
 
     // These are the moves the monsters actually have, not the moves they learn
     public List<Move> Moves { get; set; }
+    public Move CurrentMove { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     

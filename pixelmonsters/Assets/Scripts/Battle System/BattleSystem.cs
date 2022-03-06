@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Control the Game States
-public enum BattleState {Start, ActionSelection, MoveSelection, PerformMove, Busy, PartyScreen, BattleOver}
+public enum BattleState {Start, ActionSelection, MoveSelection, RunningTurn, Busy, PartyScreen, BattleOver}
+
+public enum BattleAction { Move, SwitchMonster, UseItem, Run }
+
 public class BattleSystem : MonoBehaviour
 {
    // (!) References for Player HUD and Player Unit scripts
@@ -56,15 +59,7 @@ public class BattleSystem : MonoBehaviour
       yield return dialogBox.TypeDialog($"A wild {enemyUnit.Monster.Base.Name} appeared!");
       yield return new WaitForSeconds(1f);
 
-      ChooseFirstTurn();
-   }
-
-   void ChooseFirstTurn()
-   {
-      if (playerUnit.Monster.Speed >= enemyUnit.Monster.Speed)
-         ActionSelection();
-      else
-         StartCoroutine(EnemyMove());
+    ActionSelection();
    }
 
    void BattleOver(bool won)
@@ -96,28 +91,47 @@ public class BattleSystem : MonoBehaviour
       dialogBox.EnableMoveSelector(true);
    }
 
-   IEnumerator PlayerMove()
+   IEnumerator RunTurns(BattleAction playerAction)
    {
-      state = BattleState.PerformMove;
+      state = BattleState.RunningTurn;
 
-      var move = playerUnit.Monster.Moves[currentMove];
-      yield return RunMove(playerUnit, enemyUnit, move);
-      
-      // If battle state was not changed to RunMove(), go to next step 
-      if(state == BattleState.PerformMove)
-         StartCoroutine(EnemyMove());
-   }
+      if (playerAction == BattleAction.Move)
+      {
+         playerUnit.Monster.CurrentMove = playerUnit.Monster.Moves[currentMove];
+         enemyUnit.Monster.CurrentMove = enemyUnit.Monster.GetRandomMove();
+         
+         // Check who goes first
+         bool playerGoesFirst = playerUnit.Monster.Speed >= enemyUnit.Monster.Speed;
 
-   IEnumerator EnemyMove()
-   {
-      state = BattleState.PerformMove;
+         var firstUnit = (playerGoesFirst) ? playerUnit : enemyUnit;
+         var secondUnit = (playerGoesFirst) ? enemyUnit : playerUnit;
+         
+         // RunMove() for First Turn
+         yield return RunMove(firstUnit, secondUnit, firstUnit.Monster.CurrentMove);
+         yield return RunAfterTurn(firstUnit);
+         if (state == BattleState.BattleOver) yield break;
+         
+         // RunMove() for Second Turn
+         yield return RunMove(secondUnit, firstUnit, secondUnit.Monster.CurrentMove);
+         yield return RunAfterTurn(secondUnit);
+         if (state == BattleState.BattleOver) yield break;
+      }
 
-      var move = enemyUnit.Monster.GetRandomMove();
-      yield return RunMove(enemyUnit, playerUnit, move);
-      
-      // If battle state was not changed to RunMove(), go to next step
-      if(state == BattleState.PerformMove)
-         ActionSelection();
+      else
+      {
+         if (playerAction == BattleAction.SwitchMonster)
+         {
+            var selectedMonster = playerParty.Monsters[currentMember];
+            state = BattleState.Busy;
+            yield return SwitchMonster(selectedMonster);
+         }
+         
+         // Enemy Turn
+         var enemyMove = enemyUnit.Monster.GetRandomMove();
+         yield return RunMove(enemyUnit,playerUnit,enemyMove);
+         yield return RunAfterTurn(enemyUnit);
+         if (state == BattleState.BattleOver) yield break;
+      }
    }
 
    IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
@@ -178,19 +192,6 @@ public class BattleSystem : MonoBehaviour
       {
          yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name}'s Attack Missed!");
       }
-
-      // Status effects like brn or psn will hurt the monster after the turn
-      sourceUnit.Monster.OnAfterTurn();
-      yield return ShowStatusChanges(sourceUnit.Monster);
-      yield return sourceUnit.Hud.UpdateHP();
-      if (sourceUnit.Monster.HP <= 0)
-      {
-         yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name} Fainted");
-         sourceUnit.PlayFaintAnimation();
-         yield return new WaitForSeconds(2f);
-         
-         CheckForBattleOver(sourceUnit);
-      } 
    }
    
    IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)
@@ -220,6 +221,24 @@ public class BattleSystem : MonoBehaviour
       yield return ShowStatusChanges(target);
    }
 
+   IEnumerator RunAfterTurn(BattleUnit sourceUnit)
+   {
+      if (state == BattleState.BattleOver) yield break;
+
+      // Status effects like brn or psn will hurt the monster after the turn
+      sourceUnit.Monster.OnAfterTurn();
+      yield return ShowStatusChanges(sourceUnit.Monster);
+      yield return sourceUnit.Hud.UpdateHP();
+      if (sourceUnit.Monster.HP <= 0)
+      {
+         yield return dialogBox.TypeDialog($"{sourceUnit.Monster.Base.Name} Fainted");
+         sourceUnit.PlayFaintAnimation();
+         yield return new WaitForSeconds(2f);
+         
+         CheckForBattleOver(sourceUnit);
+      }
+   }
+   
    bool CheckIfMoveHits(Move move, Monster source, Monster target)
    {
       if (move.Base.AlwaysHits)
@@ -339,7 +358,7 @@ public class BattleSystem : MonoBehaviour
          }
       }
    }
-
+   
    private void HandleMoveSelection()
    {
       if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -359,7 +378,7 @@ public class BattleSystem : MonoBehaviour
       {
          dialogBox.EnableMoveSelector(false);
          dialogBox.EnableDialogText(true);
-         StartCoroutine(PlayerMove());
+         StartCoroutine(RunTurns(BattleAction.Move));
       }
 
       else if(Input.GetKeyDown(KeyCode.X))
@@ -414,11 +433,8 @@ public class BattleSystem : MonoBehaviour
 
    IEnumerator SwitchMonster(Monster newMonster)
    {
-      bool currentMonsterFainted = true;
-      
       if (playerUnit.Monster.HP > 0)
       {
-         currentMonsterFainted = false;
          yield return dialogBox.TypeDialog($"Come back {playerUnit.Monster.Base.Name}!");
          playerUnit.PlayFaintAnimation();
          yield return new WaitForSeconds(2.0f);
@@ -428,10 +444,7 @@ public class BattleSystem : MonoBehaviour
       dialogBox.SetMoveNames(newMonster.Moves);
       yield return dialogBox.TypeDialog($"Go {newMonster.Base.Name}!");
 
-      if(currentMonsterFainted)
-         ChooseFirstTurn();
-      else
-         StartCoroutine(EnemyMove());
+      state = BattleState.RunningTurn;
    }
 }
 
