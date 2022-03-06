@@ -144,7 +144,7 @@ public class BattleSystem : MonoBehaviour
 
          if (move.Base.Category == MoveCategory.Status)
          {
-            yield return (RunMoveEffects(move, sourceUnit.Monster, targetUnit.Monster));
+            yield return (RunMoveEffects(move.Base.Effects, sourceUnit.Monster, targetUnit.Monster, move.Base.Target));
          }
 
          else
@@ -154,9 +154,14 @@ public class BattleSystem : MonoBehaviour
             yield return ShowDamageDetails(damageDetails);
          }
 
-         if (move.Base.Secondaries != null && move.Base.Secondaries.Count > 0)
+         if (move.Base.Secondaries != null && move.Base.Secondaries.Count > 0 && targetUnit.Monster.HP > 0)
          {
-            
+            foreach (var secondary in move.Base.Secondaries)
+            {
+               var rnd = UnityEngine.Random.Range(1, 101);
+               if(rnd <= secondary.Chance)
+                  yield return (RunMoveEffects(secondary, sourceUnit.Monster, targetUnit.Monster, secondary.Target));
+            }
          }
 
          if (targetUnit.Monster.HP <= 0)
@@ -188,13 +193,12 @@ public class BattleSystem : MonoBehaviour
       } 
    }
    
-   IEnumerator RunMoveEffects(Move move, Monster source, Monster target)
+   IEnumerator RunMoveEffects(MoveEffects effects, Monster source, Monster target, MoveTarget moveTarget)
    {
       // Stat boosting
-      var effects = move.Base.Effects;
       if (effects.Boosts != null)
       {
-         if(move.Base.Target == MoveTarget.Self)
+         if(moveTarget == MoveTarget.Self)
             source.ApplyBoosts(effects.Boosts);
          else
             target.ApplyBoosts(effects.Boosts);

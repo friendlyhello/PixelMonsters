@@ -10735,7 +10735,7 @@ PrefabInstance:
     - target: {fileID: 5689624280649241508, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: cbfb3c19975864fb5b927a9e6bb73e14, type: 2}
+      objectReference: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
     - target: {fileID: 5689624280649241508, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
       propertyPath: monsters.Array.data[4]._base
       value: 

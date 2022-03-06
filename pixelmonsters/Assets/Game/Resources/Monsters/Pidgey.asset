@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80725271c37c8416ea684b415e93d5b0, type: 3}
   m_Name: Pidgey
   m_EditorClassIdentifier: 
-  name: JigglyPuff
-  description: go the fuck to bed
+  name: Pidgey
+  description: Bird guy
   frontSprite: {fileID: 21300000, guid: d91b3e2ae678e4d18a64a93c18809165, type: 3}
   backSprite: {fileID: 21300000, guid: 960efb4bec9b647eba639b58d2625c57, type: 3}
-  type1: 12
-  type2: 10
+  type1: 10
+  type2: 0
   maxHp: 60
   attack: 45
   defense: 50
@@ -27,7 +27,5 @@ MonoBehaviour:
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 27757e71ada3e4da089fdceca177e418, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: f382fb4543b654142a44f2da61e03bc5, type: 2}
-    level: 4
-  - moveBase: {fileID: 11400000, guid: 6a17509290cf34a0aa0faa67bcac2716, type: 2}
-    level: 7
+  - moveBase: {fileID: 11400000, guid: d04835522d7e6432b8dccb1cc2867430, type: 2}
+    level: 1

@@ -67,6 +67,7 @@ using UnityEngine;
     }
 }
 
+[System.Serializable]
 public class SecondaryEffects : MoveEffects
 {
     [SerializeField] private int chance;
