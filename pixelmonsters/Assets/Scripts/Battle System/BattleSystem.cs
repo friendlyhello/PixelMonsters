@@ -25,6 +25,7 @@ public class BattleSystem : MonoBehaviour
    public event Action<bool> OnBattleOver;
    
    private BattleState state;
+   private BattleState? prevState; // ? is how you make something nullable
    private int currentAction;
    private int currentMove;
    private int currentMember;
@@ -105,16 +106,21 @@ public class BattleSystem : MonoBehaviour
 
          var firstUnit = (playerGoesFirst) ? playerUnit : enemyUnit;
          var secondUnit = (playerGoesFirst) ? enemyUnit : playerUnit;
+
+         var secondMonster = secondUnit.Monster;
          
          // RunMove() for First Turn
          yield return RunMove(firstUnit, secondUnit, firstUnit.Monster.CurrentMove);
          yield return RunAfterTurn(firstUnit);
          if (state == BattleState.BattleOver) yield break;
-         
-         // RunMove() for Second Turn
-         yield return RunMove(secondUnit, firstUnit, secondUnit.Monster.CurrentMove);
-         yield return RunAfterTurn(secondUnit);
-         if (state == BattleState.BattleOver) yield break;
+
+         if (secondMonster.HP >= 0)
+         {
+            // RunMove() for Second Turn
+            yield return RunMove(secondUnit, firstUnit, secondUnit.Monster.CurrentMove);
+            yield return RunAfterTurn(secondUnit);
+            if (state == BattleState.BattleOver) yield break;
+         }
       }
 
       else
@@ -132,6 +138,9 @@ public class BattleSystem : MonoBehaviour
          yield return RunAfterTurn(enemyUnit);
          if (state == BattleState.BattleOver) yield break;
       }
+
+      if (state != BattleState.BattleOver)
+         ActionSelection(); 
    }
 
    IEnumerator RunMove(BattleUnit sourceUnit, BattleUnit targetUnit, Move move)
@@ -224,7 +233,8 @@ public class BattleSystem : MonoBehaviour
    IEnumerator RunAfterTurn(BattleUnit sourceUnit)
    {
       if (state == BattleState.BattleOver) yield break;
-
+      yield return new WaitUntil((() => state == BattleState.RunningTurn));
+      
       // Status effects like brn or psn will hurt the monster after the turn
       sourceUnit.Monster.OnAfterTurn();
       yield return ShowStatusChanges(sourceUnit.Monster);
@@ -350,6 +360,7 @@ public class BattleSystem : MonoBehaviour
          else if (currentAction == 2)
          {
             // Monsters - Party screen to switch out Monsters
+            prevState = state;
             OpenPartyScreen();
          }
          else if (currentAction == 3)
@@ -420,8 +431,17 @@ public class BattleSystem : MonoBehaviour
          }
          
          partyScreen.gameObject.SetActive(false);
-         state = BattleState.Busy;
-         StartCoroutine(SwitchMonster(selectedMember));
+
+         if (prevState == BattleState.ActionSelection)
+         {
+            prevState = null;
+            StartCoroutine(RunTurns(BattleAction.SwitchMonster));
+         }
+         else
+         {
+            state = BattleState.Busy;
+            StartCoroutine(SwitchMonster(selectedMember));
+         }
       }
       
       else if (Input.GetKeyDown(KeyCode.Escape))
