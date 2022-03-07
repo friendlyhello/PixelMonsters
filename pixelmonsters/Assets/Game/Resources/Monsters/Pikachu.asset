@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80725271c37c8416ea684b415e93d5b0, type: 3}
-  m_Name: Monster_05
+  m_Name: Pikachu
   m_EditorClassIdentifier: 
-  name: JigglyPuff
-  description: go the fuck to bed
-  frontSprite: {fileID: 21300000, guid: d91b3e2ae678e4d18a64a93c18809165, type: 3}
-  backSprite: {fileID: 21300000, guid: 960efb4bec9b647eba639b58d2625c57, type: 3}
-  type1: 12
-  type2: 10
+  name: Pikachu
+  description: pika pika
+  frontSprite: {fileID: 21300000, guid: 3c41fdc5d6b2f406782acb43a78e3fab, type: 3}
+  backSprite: {fileID: 21300000, guid: d3fef91ff78b24a0c967bffdcc155f2d, type: 3}
+  type1: 4
+  type2: 1
   maxHp: 60
   attack: 45
   defense: 50
@@ -27,7 +27,7 @@ MonoBehaviour:
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: 27757e71ada3e4da089fdceca177e418, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: f382fb4543b654142a44f2da61e03bc5, type: 2}
+  - moveBase: {fileID: 11400000, guid: 6beb6ea8a43fb4ab79e7808e4e5108df, type: 2}
     level: 4
-  - moveBase: {fileID: 11400000, guid: 6a17509290cf34a0aa0faa67bcac2716, type: 2}
+  - moveBase: {fileID: 11400000, guid: 57b64ea3ca9bc4e92a5649a8b6efd972, type: 2}
     level: 7

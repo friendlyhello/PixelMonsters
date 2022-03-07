@@ -9719,10 +9719,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wildMonsters:
-  - _base: {fileID: 11400000, guid: 984ab9b6ba89f42c3957a8b3b96f13ba, type: 2}
+  - _base: {fileID: 11400000, guid: d5ef4b35b998f49d38020a4c0246536f, type: 2}
     level: 5
-  - _base: {fileID: 11400000, guid: 984ab9b6ba89f42c3957a8b3b96f13ba, type: 2}
-    level: 7
+  - _base: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
+    level: 8
 --- !u!1 &2081773905
 GameObject:
   m_ObjectHideFlags: 0
@@ -10735,10 +10735,10 @@ PrefabInstance:
     - target: {fileID: 5689624280649241508, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
       propertyPath: monsters.Array.data[0]._base
       value: 
-      objectReference: {fileID: 11400000, guid: ab876ee76f1254bcfabb3cc6acaa1c04, type: 2}
+      objectReference: {fileID: 11400000, guid: 9fdcea4079c414038ad7794b9d44e85d, type: 2}
     - target: {fileID: 5689624280649241508, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
       propertyPath: monsters.Array.data[0].level
-      value: 2
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5689624280649241508, guid: fc8ffc8b69d514370bbb1c6be993f1a7, type: 3}
       propertyPath: monsters.Array.data[4]._base

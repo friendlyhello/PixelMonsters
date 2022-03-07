@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80725271c37c8416ea684b415e93d5b0, type: 3}
-  m_Name: Monster_03
+  m_Name: BustedPoisonMonster
   m_EditorClassIdentifier: 
   name: Poison
-  description: I poison things!
+  description: This monster causes bugs :(
   frontSprite: {fileID: 21300000, guid: f092e44504b4247589e29c613b432251, type: 3}
   backSprite: {fileID: 21300000, guid: 32d41387efe1548879805ac418f46f6b, type: 3}
   type1: 12

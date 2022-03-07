@@ -14,6 +14,7 @@ using UnityEngine;
     [SerializeField] private int accuracy;
     [SerializeField] private bool alwaysHits;
     [SerializeField] private int pp;
+    [SerializeField] private int priority;
 
     [SerializeField] private MoveCategory category;
     [SerializeField] private MoveEffects effects;
@@ -47,6 +48,11 @@ using UnityEngine;
 
     public int PP {
         get { return pp; }
+    }
+
+    public int Priority
+    {
+        get { return priority; }
     }
     
     // Expose category property
