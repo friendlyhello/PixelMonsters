@@ -394,6 +394,9 @@ public class BattleSystem : MonoBehaviour
 
       if (Input.GetKeyDown(KeyCode.Return))
       {
+         var move = playerUnit.Monster.Moves[currentMove];
+         if (move.PP == 0) return;
+         
          dialogBox.EnableMoveSelector(false);
          dialogBox.EnableDialogText(true);
          StartCoroutine(RunTurns(BattleAction.Move));
