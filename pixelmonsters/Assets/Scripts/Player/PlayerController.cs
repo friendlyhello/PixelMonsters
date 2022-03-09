@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private LayerMask solidObjectsLayer;
+    [SerializeField] private LayerMask interactableLayer;
     [SerializeField] private LayerMask grassLayer;
 
     public event Action OnEncountered;
@@ -46,12 +47,32 @@ public class PlayerController : MonoBehaviour
                 targetPos.y += input.y;
                 
                 // (!) targetPos == true or false (Whatever the machine isWalkable returns)
-                if(isWalkable(targetPos)) 
+                if(IsWalkable(targetPos)) 
                     StartCoroutine(Move(targetPos));
             }
         }
         
         animator.SetBool("isMoving", isMoving);
+        
+        if(Input.GetKeyDown(KeyCode.Return))
+            Interact();
+    }
+
+    void Interact()
+    {
+        // Find direction the player is facing
+        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        
+        // Find position of tile the player is facing
+        var interactPos = transform.position + facingDir;
+        
+        //Debug.DrawLine(transform.position, interactPos, Color.red, 1.0f);
+
+        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, interactableLayer);
+        if (collider != null)
+        {
+            
+        }
     }
 
     // Coroutine - Move the Player from its starting position to its target position, over a period of time
@@ -72,9 +93,9 @@ public class PlayerController : MonoBehaviour
         CheckForEncounters();
     }
 
-    private bool isWalkable(Vector3 targetPos)
+    private bool IsWalkable(Vector3 targetPos)
     {
-        if (Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer) != null)
+        if (Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer | interactableLayer) != null)
         {
             return false;
         }
